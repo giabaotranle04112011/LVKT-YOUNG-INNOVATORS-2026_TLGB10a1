@@ -1,0 +1,2423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản Lý Học Sinh | THCS & THPT Liên Việt Kontum</title>
+  <meta name="author" content="Trần Lê Gia Bảo - Lớp 10A1, THCS &amp; THPT Liên Việt Kon Tum">
+  <meta name="description" content="Hệ thống Quản trị trường học và Cảnh báo sớm học tập EDU-GUARD AI - Tác giả: Trần Lê Gia Bảo (Lớp 10A1)">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    window.escapeHtml = function(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+    var escapeHtml = window.escapeHtml;
+  </script>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebarMobile()"></div>
+  <aside class="app-sidebar">
+    <div class="sidebar-header">
+      <div class="logo-badge">🎓</div>
+      <div style="flex:1;">
+        <div class="sidebar-brand-name">HỆ THỐNG QUẢN LÝ</div>
+        <div class="sidebar-brand-sub">THCS &amp; THPT Liên Việt Kontum</div>
+        <div style="font-size:0.68rem;color:#0284c7;font-weight:800;margin-top:2px;">👨‍💻 Trần Lê Gia Bảo (Lớp 10A1)</div>
+      </div>
+      <button class="sidebar-mobile-close" onclick="closeSidebarMobile()" aria-label="Đóng menu">✕</button>
+    </div>
+    
+    <div id="sidebarRoleBadge" class="sidebar-role-badge">⏳ Đang tải phiên...</div>
+
+    <div class="sidebar-menu">
+      <div class="menu-category-label">Chức năng chính</div>
+      <button class="menu-item-btn active" id="navDashboard"  onclick="navigate('dashboard')"><span class="menu-icon">📊</span><span>Dashboard Tổng Quan</span></button>
+      <button class="menu-item-btn"        id="navAiReport"   onclick="navigate('ai_report')"><span class="menu-icon">🤖</span><span>AI Quản Lý &amp; Báo Cáo</span><span class="sidebar-badge-new">NEW</span></button>
+      <button class="menu-item-btn"        id="navKttx"       onclick="navigate('kttx')"><span class="menu-icon">📝</span><span id="sidebarKttxTitle">Bảng Điểm KTTX (35 Môn)</span></button>
+      <button class="menu-item-btn"        id="navSubjects"   onclick="navigate('subjects')"><span class="menu-icon">📚</span><span>Quản Lý Môn Học</span><span class="sidebar-badge-new" id="sidebarSubjBadge" style="background:#0284c7;">35 Môn</span></button>
+      <button class="menu-item-btn"        id="navLms"        onclick="navigate('lms')"><span class="menu-icon">📋</span><span>LMS Giao Bài Tập</span><span class="sidebar-badge-new" style="background:#e11d48;">vnEdu AI</span></button>
+      <button class="menu-item-btn"        id="navTkb"        onclick="navigate('tkb')"><span class="menu-icon">📅</span><span>Thời Khóa Biểu</span><span class="sidebar-badge-new" style="background:#0284c7;">Tự Động</span></button>
+      <button class="menu-item-btn"        id="navHanhKiem"   onclick="navigate('hanh_kiem')"><span class="menu-icon">🎭</span><span>Hạnh Kiểm Học Sinh</span></button>
+      <button class="menu-item-btn"        id="navBenchmark"  onclick="navigate('benchmark')"><span class="menu-icon">📑</span><span>Kiểm Định Mô Hình AI</span></button>
+      <button class="menu-item-btn"        id="navAccounts"   onclick="navigate('accounts')" style="display:none;"><span class="menu-icon">🔑</span><span>Quản Lý Tài Khoản</span></button>
+      <button class="menu-item-btn"        id="navAddStudent" onclick="navigate('add_student')"><span class="menu-icon">➕</span><span>Thêm Mới Học Sinh</span></button>
+
+      <div class="menu-category-label" style="margin-top:14px;">41 Lớp Toàn Trường Theo Khối</div>
+      
+      <!-- Khối 6 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr6')">
+        <span>📚 Khối 6 (6 lớp THCS)</span>
+        <span id="arrow_gr6">▾</span>
+      </button>
+      <div class="grade-accordion-content open" id="content_gr6">
+        <button class="sub-class-btn" onclick="filterByClass('6 Cát Bà')"><span>6 Cát Bà</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('6 Cồn Cỏ')"><span>6 Cồn Cỏ</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('6 Đảo Yến')"><span>6 Đảo Yến</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('6 Phú Quý')"><span>6 Phú Quý</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('6 Sinh Tồn')"><span>6 Sinh Tồn</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('6 Song Tử')"><span>6 Song Tử</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+
+      <!-- Khối 7 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr7')">
+        <span>📚 Khối 7 (6 lớp THCS)</span>
+        <span id="arrow_gr7">▸</span>
+      </button>
+      <div class="grade-accordion-content" id="content_gr7">
+        <button class="sub-class-btn" onclick="filterByClass('7 Bình Ba')"><span>7 Bình Ba</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('7 Côn Đảo')"><span>7 Côn Đảo</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('7 Hoàng Sa')"><span>7 Hoàng Sa</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('7 Lý Sơn')"><span>7 Lý Sơn</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('7 Phú Quốc')"><span>7 Phú Quốc</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('7 Trường Sa')"><span>7 Trường Sa</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+
+      <!-- Khối 8 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr8')">
+        <span>📚 Khối 8 (7 lớp THCS)</span>
+        <span id="arrow_gr8">▸</span>
+      </button>
+      <div class="grade-accordion-content" id="content_gr8">
+        <button class="sub-class-btn" onclick="filterByClass('8 Bạch Long Vĩ')"><span>8 Bạch Long Vĩ</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('8 Biện Sơn')"><span>8 Biện Sơn</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('8 Gạc Ma')"><span>8 Gạc Ma</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('8 Hà Tiên')"><span>8 Hà Tiên</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('8 Long Châu')"><span>8 Long Châu</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('8 Phú Lâm')"><span>8 Phú Lâm</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('8 Sơn Dương')"><span>8 Sơn Dương</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+
+      <!-- Khối 9 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr9')">
+        <span>📚 Khối 9 (7 lớp THCS)</span>
+        <span id="arrow_gr9">▸</span>
+      </button>
+      <div class="grade-accordion-content" id="content_gr9">
+        <button class="sub-class-btn" onclick="filterByClass('9 Bình Hưng')"><span>9 Bình Hưng</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('9 Cô Tô')"><span>9 Cô Tô</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('9 Côn Sơn')"><span>9 Côn Sơn</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('9 Nam Du')"><span>9 Nam Du</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('9 Thổ Chu')"><span>9 Thổ Chu</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('9 Tuần Châu')"><span>9 Tuần Châu</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('9 Vân Đồn')"><span>9 Vân Đồn</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+
+      <!-- Khối 10 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr10')">
+        <span>📗 Khối 10 (5 lớp THPT)</span>
+        <span id="arrow_gr10">▸</span>
+      </button>
+      <div class="grade-accordion-content" id="content_gr10">
+        <button class="sub-class-btn" onclick="filterByClass('10A1')"><span>10A1 (Lớp tác giả)</span><span style="font-size:0.7rem;color:#0284c7;font-weight:700;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('10A2')"><span>10A2</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('10A3')"><span>10A3</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('10A4')"><span>10A4</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('10A5')"><span>10A5</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+
+      <!-- Khối 11 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr11')">
+        <span>📘 Khối 11 (5 lớp THPT)</span>
+        <span id="arrow_gr11">▸</span>
+      </button>
+      <div class="grade-accordion-content" id="content_gr11">
+        <button class="sub-class-btn" onclick="filterByClass('11B1')"><span>11B1</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('11B2')"><span>11B2</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('11B3')"><span>11B3</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('11B4')"><span>11B4</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('11B5')"><span>11B5</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+
+      <!-- Khối 12 -->
+      <button class="grade-accordion-btn" onclick="toggleGradeAccordion('gr12')">
+        <span>📕 Khối 12 (5 lớp THPT)</span>
+        <span id="arrow_gr12">▸</span>
+      </button>
+      <div class="grade-accordion-content" id="content_gr12">
+        <button class="sub-class-btn" onclick="filterByClass('12C1')"><span>12C1 (Lớp Ánh Thư)</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('12C2')"><span>12C2</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('12C3')"><span>12C3</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('12C4')"><span>12C4</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+        <button class="sub-class-btn" onclick="filterByClass('12C5')"><span>12C5</span><span style="font-size:0.7rem;color:#94a3b8;">10 HS</span></button>
+      </div>
+    </div>
+
+    <button class="sidebar-logout-btn" onclick="doLogout()">🚪 Đăng xuất</button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="app-main">
+    <header class="top-header">
+      <div class="header-left">
+        <button class="btn-hamburger" id="btnHamburger" onclick="toggleSidebarMobile()" aria-label="Mở Menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+        <div class="breadcrumb-page" id="pageTitleLabel">Dashboard Tổng Quan</div>
+      </div>
+      <div class="header-right">
+        <button class="btn-header-action" onclick="printReport()" title="In hoặc xuất báo cáo ra PDF">
+          <span>🖨️</span><span class="btn-label-text"> In Báo Cáo</span>
+        </button>
+        <button class="btn-header-action" onclick="toggleAiChat()" style="color:#0284c7;border-color:#bae6fd;background:#f0f9ff;" title="Trợ lý AI Gemini Flash">
+          <span>🤖</span><span class="btn-label-text"> Trợ Lý AI</span>
+        </button>
+        <div class="user-profile">
+          <div class="user-avatar-circle" id="headerAvatar">AD</div>
+          <div>
+            <div class="user-name" id="userHeaderName">Đang tải...</div>
+            <div class="user-role" id="userHeaderRole"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-scrollable">
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewDashboard">
+
+        <!-- THỐNG KÊ CHUNG TOÀN TRƯỜNG -->
+        <div class="card-box" style="margin-bottom:16px;background:radial-gradient(circle at 10% 20%, #1e3a5f 0%, #0f172a 100%);border:none;box-shadow:0 10px 25px -5px rgba(15,23,42,0.3);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div style="color:#38bdf8;font-size:0.74rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">🏫 THỐNG KÊ QUY MÔ TRƯỜNG HỌC</div>
+              <div style="color:white;font-size:1.15rem;font-weight:900;margin-top:2px;">Trường THCS &amp; THPT Liên Việt Kontum</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <span style="background:rgba(255,255,255,0.12);padding:5px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;color:white;border:1px solid rgba(255,255,255,0.2);">Năm học 2026–2027</span>
+              <span style="background:rgba(56,189,248,0.2);color:#38bdf8;padding:5px 12px;border-radius:20px;font-size:0.75rem;font-weight:800;border:1px solid rgba(56,189,248,0.4);">Học kỳ 1</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;">
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:12px 10px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:1.9rem;font-weight:900;color:#fbbf24;line-height:1;">60</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:5px;line-height:1.25;">Lớp học sáng ☀️</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:12px 10px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:1.9rem;font-weight:900;color:#c084fc;line-height:1;">41</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:5px;line-height:1.25;">Lớp học chiều 🌆</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:12px 10px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:1.9rem;font-weight:900;color:#34d399;line-height:1;">60</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:5px;line-height:1.25;">Lớp 2 buổi (2B) 📘</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:12px 10px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:1.9rem;font-weight:900;color:#60a5fa;line-height:1;">88</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:5px;line-height:1.25;">Giáo viên toàn trường 👨‍🏫</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:12px 10px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:1.9rem;font-weight:900;color:#fb923c;line-height:1;" id="statPhongHoc">0</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:5px;line-height:1.25;">Phòng học đang dùng 🏛️</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:12px 10px;text-align:center;backdrop-filter:blur(4px);">
+              <div style="font-size:1.9rem;font-weight:900;color:#f472b6;line-height:1;" id="statTotalSubjects">35</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:5px;line-height:1.25;">Môn học toàn trường 📚</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 KPI CARDS -->
+        <section class="kpi-cards-grid">
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">Tổng học sinh</span><span class="kpi-icon-pill" style="background:#e0f2fe;color:#0284c7;">👥</span></div>
+            <div class="kpi-value" id="kpiTotal">--</div>
+            <div class="kpi-trend" id="kpiTotalSub">41 lớp · THCS &amp; THPT</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">🟢 An toàn</span><span class="kpi-icon-pill" style="background:#dcfce7;color:#15803d;">✓</span></div>
+            <div class="kpi-value" id="kpiLow" style="color:#10b981;">--</div>
+            <div class="kpi-trend" id="kpiLowPct" style="color:#15803d;">--%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">🟡 Cần lưu ý</span><span class="kpi-icon-pill" style="background:#fef3c7;color:#b45309;">!</span></div>
+            <div class="kpi-value" id="kpiMed" style="color:#f59e0b;">--</div>
+            <div class="kpi-trend" id="kpiMedPct" style="color:#b45309;">--%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">🔴 Nguy cơ cao</span><span class="kpi-icon-pill" style="background:#fee2e2;color:#b91c1c;">⚠️</span></div>
+            <div class="kpi-value" id="kpiHigh" style="color:#ef4444;">--</div>
+            <div class="kpi-trend" id="kpiHighPct" style="color:#b91c1c;">--%</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">🎯 Tỷ lệ phục hồi</span><span class="kpi-icon-pill" style="background:#eef2ff;color:#4f46e5;">📈</span></div>
+            <div class="kpi-value" style="color:#6366f1;">83.3%</div>
+            <div class="kpi-trend" style="color:#4f46e5;">Sau 4 tuần can thiệp</div>
+          </div>
+        </section>
+
+        <!-- CHARTS ROW -->
+        <section class="charts-grid-row">
+          <div class="card-box">
+            <div class="card-box-header"><div><div class="card-box-title">⏱️ Chỉ Số Học Đường</div><div class="card-box-subtitle">An toàn vs. Nguy cơ</div></div></div>
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 240 130">
+                <path d="M 30 110 A 90 90 0 0 1 210 110" fill="none" stroke="#e2e8f0" stroke-width="18" stroke-linecap="round"/>
+                <path d="M 30 110 A 90 90 0 0 1 185 45" fill="none" stroke="#10b981" stroke-width="18" stroke-linecap="round"/>
+                <path d="M 185 45 A 90 90 0 0 1 210 110" fill="none" stroke="#ef4444" stroke-width="18" stroke-linecap="round"/>
+                <text x="120" y="88" text-anchor="middle" font-size="24" font-weight="800" fill="#0f172a" id="gaugePct">--%</text>
+                <text x="120" y="108" text-anchor="middle" font-size="10" fill="#64748b" font-weight="600">TỶ LỆ AN TOÀN</text>
+              </svg>
+              <div class="gauge-legend">
+                <div class="legend-item"><span class="legend-color-dot" style="background:#10b981;"></span><span id="gaugeAnToan">An toàn</span></div>
+                <div class="legend-item"><span class="legend-color-dot" style="background:#ef4444;"></span><span id="gaugeNguyCo">Nguy cơ</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-box">
+            <div class="card-box-header"><div><div class="card-box-title">📊 Phân Bổ Rủi Ro Theo Khối</div><div class="card-box-subtitle">So sánh số HS an toàn và rủi ro ở 7 khối lớp (Khối 6 – 12)</div></div></div>
+            <svg class="bar-chart-svg" viewBox="0 0 540 175" id="barChartSvg"></svg>
+          </div>
+        </section>
+
+        <!-- STUDENT TABLE & TOOLBAR -->
+        <section class="table-section">
+          <div class="table-toolbar">
+            <div class="toolbar-left">
+              <div class="table-title" id="tableTitle">📋 Danh Sách Học Sinh</div>
+              
+              <!-- Dropdown chọn lớp -->
+              <select class="filter-select" id="classSelect" onchange="applyFilters()">
+                <option value="ALL">Tất cả 41 lớp toàn trường</option>
+                <optgroup label="── THCS Khối 6 ──"><option>6 Cát Bà</option><option>6 Cồn Cỏ</option><option>6 Đảo Yến</option><option>6 Phú Quý</option><option>6 Sinh Tồn</option><option>6 Song Tử</option></optgroup>
+                <optgroup label="── THCS Khối 7 ──"><option>7 Bình Ba</option><option>7 Côn Đảo</option><option>7 Hoàng Sa</option><option>7 Lý Sơn</option><option>7 Phú Quốc</option><option>7 Trường Sa</option></optgroup>
+                <optgroup label="── THCS Khối 8 ──"><option>8 Bạch Long Vĩ</option><option>8 Biện Sơn</option><option>8 Gạc Ma</option><option>8 Hà Tiên</option><option>8 Long Châu</option><option>8 Phú Lâm</option><option>8 Sơn Dương</option></optgroup>
+                <optgroup label="── THCS Khối 9 ──"><option>9 Bình Hưng</option><option>9 Cô Tô</option><option>9 Côn Sơn</option><option>9 Nam Du</option><option>9 Thổ Chu</option><option>9 Tuần Châu</option><option>9 Vân Đồn</option></optgroup>
+                <optgroup label="── THPT Khối 10 ──"><option>10A1</option><option>10A2</option><option>10A3</option><option>10A4</option><option>10A5</option></optgroup>
+                <optgroup label="── THPT Khối 11 ──"><option>11B1</option><option>11B2</option><option>11B3</option><option>11B4</option><option>11B5</option></optgroup>
+                <optgroup label="── THPT Khối 12 ──"><option>12C1</option><option>12C2</option><option>12C3</option><option>12C4</option><option>12C5</option></optgroup>
+              </select>
+
+              <!-- Lọc nhanh theo Khối -->
+              <div class="filter-chip-row">
+                <button class="filter-chip-btn active-all" id="btnGradeAll" onclick="filterByGrade('ALL')">Tất cả khối</button>
+                <button class="filter-chip-btn" id="btnGrade6" onclick="filterByGrade('6')">Khối 6</button>
+                <button class="filter-chip-btn" id="btnGrade7" onclick="filterByGrade('7')">Khối 7</button>
+                <button class="filter-chip-btn" id="btnGrade8" onclick="filterByGrade('8')">Khối 8</button>
+                <button class="filter-chip-btn" id="btnGrade9" onclick="filterByGrade('9')">Khối 9</button>
+                <button class="filter-chip-btn" id="btnGrade10" onclick="filterByGrade('10')">Khối 10</button>
+                <button class="filter-chip-btn" id="btnGrade11" onclick="filterByGrade('11')">Khối 11</button>
+                <button class="filter-chip-btn" id="btnGrade12" onclick="filterByGrade('12')">Khối 12</button>
+              </div>
+
+              <!-- Lọc mức độ rủi ro -->
+              <div class="filter-chip-row">
+                <button class="filter-chip-btn active-all" id="btnFilterAll" onclick="setRiskFilter('ALL')">Tất cả mức</button>
+                <button class="filter-chip-btn" id="btnFilterHigh" onclick="setRiskFilter('CAO')">🔴 Nguy cơ</button>
+                <button class="filter-chip-btn" id="btnFilterMed"  onclick="setRiskFilter('TRUNG BÌNH')">🟡 Lưu ý</button>
+                <button class="filter-chip-btn" id="btnFilterLow"  onclick="setRiskFilter('THẤP')">🟢 An toàn</button>
+              </div>
+            </div>
+            
+            <input type="text" class="search-input-box" id="searchInput" placeholder="🔍 Tìm tên / Mã HS / SĐT..." oninput="applyFilters()">
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Mã HS</th><th>Học Sinh</th><th>Lớp</th>
+                  <th>Điểm TB</th><th>Học Lực</th>
+                  <th>Hạnh Kiểm</th><th>SĐT Phụ Huynh</th><th>Vắng</th>
+                  <th>Rủi Ro AI</th><th style="text-align:right;">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="studentTableBody"></tbody>
+            </table>
+          </div>
+
+          <div id="tablePagination" style="padding:12px 18px;border-top:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);background:#fafafa;">
+            <span id="tableCountLabel">--</span>
+            <div id="pageButtons" style="display:flex;gap:5px;"></div>
+          </div>
+        </section>
+
+        <!-- FOOTER ATTRIBUTION -->
+        <footer style="margin-top:20px;padding:16px 0;border-top:1px solid var(--border-light);text-align:center;font-size:0.75rem;color:var(--text-muted);">
+          <div>🏫 <strong>Trường THCS &amp; THPT Liên Việt Kontum</strong> — Hệ Thống Quản Lý Học Sinh &amp; Cố Vấn AI Số</div>
+          <div style="margin-top:4px;">👨‍💻 Đề tài NCKH được thiết kế &amp; lập trình bởi: <strong style="color:#0284c7;">Trần Lê Gia Bảo — Học sinh lớp 10A1</strong> (LVKT Young Innovators 2026)</div>
+        </footer>
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewKttx" style="display:none;">
+        <div class="card-box" style="margin-bottom:14px;">
+          <div class="card-box-header">
+            <div>
+              <div class="card-box-title" id="kttxViewTitle">📝 Bảng Điểm KTTX — Kiểm Tra Thường Xuyên (35 Môn)</div>
+              <div class="card-box-subtitle">Trọng số chuẩn Bộ GD&amp;ĐT: KTTX (×1) · Giữa Kỳ (×2) · Cuối Kỳ (×3)</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button class="btn-primary" onclick="navigate('subjects')" style="padding:6px 14px;font-size:0.8rem;border-radius:9px;display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0284c7,#0369a1);font-weight:700;box-shadow:0 2px 8px rgba(2,132,199,0.25);">
+                ⚙️ Quản Lý Môn Học (+ Thêm / Xóa)
+              </button>
+              <button class="btn-header-action" onclick="printReport()">🖨️ In Bảng Điểm</button>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:10px;flex-wrap:wrap;">
+            <select class="filter-select" id="kttxClassSelect" onchange="handleKttxClassChange()">
+              <option value="ALL">Tất cả 41 lớp toàn trường</option>
+              <optgroup label="── THCS Khối 6 ──"><option>6 Cát Bà</option><option>6 Cồn Cỏ</option><option>6 Đảo Yến</option><option>6 Phú Quý</option><option>6 Sinh Tồn</option><option>6 Song Tử</option></optgroup>
+              <optgroup label="── THCS Khối 7 ──"><option>7 Bình Ba</option><option>7 Côn Đảo</option><option>7 Hoàng Sa</option><option>7 Lý Sơn</option><option>7 Phú Quốc</option><option>7 Trường Sa</option></optgroup>
+              <optgroup label="── THCS Khối 8 ──"><option>8 Bạch Long Vĩ</option><option>8 Biện Sơn</option><option>8 Gạc Ma</option><option>8 Hà Tiên</option><option>8 Long Châu</option><option>8 Phú Lâm</option><option>8 Sơn Dương</option></optgroup>
+              <optgroup label="── THCS Khối 9 ──"><option>9 Bình Hưng</option><option>9 Cô Tô</option><option>9 Côn Sơn</option><option>9 Nam Du</option><option>9 Thổ Chu</option><option>9 Tuần Châu</option><option>9 Vân Đồn</option></optgroup>
+              <optgroup label="── THPT Khối 10 ──"><option>10A1</option><option>10A2</option><option>10A3</option><option>10A4</option><option>10A5</option></optgroup>
+              <optgroup label="── THPT Khối 11 ──"><option>11B1</option><option>11B2</option><option>11B3</option><option>11B4</option><option>11B5</option></optgroup>
+              <optgroup label="── THPT Khối 12 ──"><option>12C1</option><option>12C2</option><option>12C3</option><option>12C4</option><option>12C5</option></optgroup>
+            </select>
+            <select class="filter-select" id="kttxSubjectSelect" onchange="renderKttxTable()" style="min-width:200px;font-weight:700;">
+              <!-- Javascript populateKttxSubjectSelect sẽ tự động nạp danh sách động -->
+              <option value="Toán">📐 Môn Toán</option>
+            </select>
+            <input type="text" class="search-input-box" id="kttxSearch" placeholder="🔍 Tìm học sinh..." oninput="renderKttxTable()" style="max-width:210px;">
+            <button type="button" class="btn btn-outline" onclick="openSyncTkbSubjectsModal()" style="background:linear-gradient(135deg,#059669,#047857);color:white;border:none;box-shadow:0 2px 8px rgba(5,150,105,0.3);font-weight:800;display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;cursor:pointer;font-size:0.8rem;" title="Quét thời khóa biểu tự động để gộp môn chuyên đề và loại bỏ môn không học">
+              <span>⚡</span> <span>Quét TKB &amp; Gộp Môn</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card-box" style="padding:0;overflow:auto;">
+          <table class="data-table" id="kttxTable">
+            <thead>
+              <tr>
+                <th>Mã HS</th><th>Họ và Tên</th><th>Lớp</th>
+                <th style="background:#fef3c7;color:#92400e;text-align:center;">KTTX 1</th>
+                <th style="background:#fef3c7;color:#92400e;text-align:center;">KTTX 2</th>
+                <th style="background:#dbeafe;color:#1e40af;text-align:center;">KT Giữa Kỳ (×2)</th>
+                <th style="background:#ede9fe;color:#4c1d95;text-align:center;">KT Cuối Kỳ (×3)</th>
+                <th style="background:#dcfce7;color:#15803d;font-weight:900;text-align:center;">TB Môn</th>
+                <th style="text-align:center;">Xếp Loại</th>
+                <th style="text-align:right;">Sửa điểm</th>
+              </tr>
+            </thead>
+            <tbody id="kttxTableBody"></tbody>
+          </table>
+          <div id="kttxPagination" style="padding:10px 16px;border-top:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);background:#fafafa;">
+            <span id="kttxCountLabel">--</span>
+            <div id="kttxPageButtons" style="display:flex;gap:5px;"></div>
+          </div>
+        </div>
+
+        <div class="card-box" style="margin-top:14px;">
+          <div class="card-box-title" style="margin-bottom:12px;">📊 Phân Bổ Xếp Loại Môn Học Đang Xem</div>
+          <div id="kttxStats" style="display:flex;gap:12px;flex-wrap:wrap;"></div>
+        </div>
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewSubjects" style="display:none;">
+        
+        <!-- HEADER CARD -->
+        <div class="card-box" style="margin-bottom:14px;background:radial-gradient(circle at 10% 20%, #1e3a5f 0%, #0f172a 100%);border:none;box-shadow:0 10px 25px -5px rgba(15,23,42,0.3);">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="color:#38bdf8;font-size:0.74rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">📚 QUẢN TRỊ CHƯƠNG TRÌNH ĐÀO TẠO</div>
+              <div style="color:white;font-size:1.25rem;font-weight:900;margin-top:2px;">Danh Mục Môn Học Đang Giảng Dạy &amp; Tính Điểm</div>
+              <div style="color:rgba(255,255,255,0.8);font-size:0.78rem;margin-top:4px;">
+                Trường THCS &amp; THPT Liên Việt Kontum · Tự do thêm môn học mới, xóa bỏ môn không cần thiết, tự động đồng bộ hóa bảng điểm KTTX và hồ sơ học sinh.
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;">
+              <button onclick="handleResetDefaultSubjects()" style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.25);color:white;padding:7px 14px;border-radius:10px;font-size:0.78rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                🔄 Khôi phục 35 môn gốc
+              </button>
+            </div>
+          </div>
+
+          <!-- MINI STATS -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;">
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:10px 12px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:900;color:#38bdf8;line-height:1;" id="statSubjTotal">35</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:4px;">Tổng số môn học</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:10px 12px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:900;color:#34d399;line-height:1;" id="statSubjBoth">24</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:4px;">Môn Cả 2 Cấp</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:10px 12px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:900;color:#fbbf24;line-height:1;" id="statSubjThcs">1</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:4px;">Chỉ áp dụng THCS</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.14);border-radius:10px;padding:10px 12px;text-align:center;">
+              <div style="font-size:1.6rem;font-weight:900;color:#f472b6;line-height:1;" id="statSubjThpt">10</div>
+              <div style="font-size:0.72rem;color:rgba(255,255,255,0.85);font-weight:700;margin-top:4px;">Chỉ áp dụng THPT</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM THÊM MÔN HỌC MỚI -->
+        <div class="card-box" id="cardAddSubjectForm" style="margin-bottom:14px;border:1.5px solid #bae6fd;background:linear-gradient(180deg,#f0f9ff 0%,#ffffff 100%);">
+          <div class="card-box-header" style="margin-bottom:12px;">
+            <div>
+              <div class="card-box-title" style="color:#0369a1;">➕ Thêm Môn Học Mới Vào Hệ Thống</div>
+              <div class="card-box-subtitle">Khi thêm mới, hệ thống tự động khởi tạo điểm số phù hợp cho học sinh và cập nhật các bảng điểm KTTX.</div>
+            </div>
+          </div>
+          <form id="formAddCustomSubject" onsubmit="handleFormAddSubject(event)">
+            <div style="display:grid;grid-template-columns:2fr 1.5fr 1.2fr 0.9fr auto;gap:10px;align-items:end;">
+              <div>
+                <label style="font-size:0.75rem;font-weight:800;color:#0f172a;display:block;margin-bottom:4px;">Tên Môn Học *</label>
+                <input type="text" id="newSubjName" placeholder="VD: Lập Trình Game, Triết Học Tuổi Trẻ, Tiếng Đức..." required style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.83rem;outline:none;">
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:800;color:#0f172a;display:block;margin-bottom:4px;">Tổ / Nhóm Bộ Môn</label>
+                <select id="newSubjGroup" style="width:100%;padding:8px 10px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.83rem;background:white;outline:none;">
+                  <option value="Môn Cốt Lõi">Môn Cốt Lõi</option>
+                  <option value="Khoa Học Tự Nhiên">Khoa Học Tự Nhiên</option>
+                  <option value="Khoa Học Xã Hội">Khoa Học Xã Hội</option>
+                  <option value="Công Nghệ - Số Hóa" selected>Công Nghệ - Số Hóa</option>
+                  <option value="Thể Chất &amp; An Ninh">Thể Chất &amp; An Ninh</option>
+                  <option value="Nghệ Thuật &amp; Kỹ Năng">Nghệ Thuật &amp; Kỹ Năng</option>
+                  <option value="Ngoại Ngữ 2">Ngoại Ngữ 2 Tự Chọn</option>
+                  <option value="Chuyên Đề Học Tập">Chuyên Đề Học Tập</option>
+                  <option value="Bản Sắc Kon Tum">Bản Sắc Kon Tum</option>
+                  <option value="Sáng Tạo Trẻ">Sáng Tạo Trẻ</option>
+                  <option value="Môn Tự Chọn Khác">Môn Tự Chọn Khác</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:800;color:#0f172a;display:block;margin-bottom:4px;">Cấp Học Áp Dụng</label>
+                <select id="newSubjLevel" style="width:100%;padding:8px 10px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.83rem;background:white;outline:none;">
+                  <option value="both" selected>Cả 2 cấp (THCS &amp; THPT)</option>
+                  <option value="thcs">Chỉ THCS (Khối 8, 9)</option>
+                  <option value="thpt">Chỉ THPT (Khối 10, 11, 12)</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.75rem;font-weight:800;color:#0f172a;display:block;margin-bottom:4px;">Biểu Tượng</label>
+                <select id="newSubjIcon" style="width:100%;padding:8px 6px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.88rem;background:white;outline:none;text-align:center;">
+                  <option value="📖">📖 Sách</option>
+                  <option value="💻" selected>💻 Máy tính</option>
+                  <option value="🤖">🤖 AI/Robot</option>
+                  <option value="🔬">🔬 Khoa học</option>
+                  <option value="🧪">🧪 Hóa học</option>
+                  <option value="⚡">⚡ Vật lý</option>
+                  <option value="🧬">🧬 Sinh học</option>
+                  <option value="📐">📐 Toán</option>
+                  <option value="🌐">🌐 Ngoại ngữ</option>
+                  <option value="🎨">🎨 Mỹ thuật</option>
+                  <option value="🎵">🎵 Âm nhạc</option>
+                  <option value="🏃">🏃 Thể thao</option>
+                  <option value="🥁">🥁 Cồng chiêng</option>
+                  <option value="💡">💡 Sáng tạo</option>
+                  <option value="📜">📜 Lịch sử</option>
+                  <option value="🌍">🌍 Địa lý</option>
+                  <option value="⚖️">⚖️ Pháp luật</option>
+                  <option value="📈">📈 Kinh tế</option>
+                  <option value="🎯">🎯 Mục tiêu</option>
+                  <option value="🤝">🤝 Kỹ năng</option>
+                </select>
+              </div>
+              <div>
+                <button type="submit" class="btn-primary" style="padding:9px 18px;font-size:0.85rem;border-radius:8px;display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,#0284c7,#0369a1);white-space:nowrap;font-weight:800;box-shadow:0 3px 10px rgba(2,132,199,0.3);">
+                  <span>➕ Thêm Môn Ngay</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- TOOL QUÉT & ĐỒNG BỘ MÔN HỌC TỰ ĐỘNG TỪ THỜI KHÓA BIỂU (GDPT 2018) -->
+        <div class="card-box" style="margin-bottom:14px;background:linear-gradient(135deg, rgba(2,132,199,0.06), rgba(16,185,129,0.06));border:1.5px solid #bae6fd;border-radius:14px;padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:1.4rem;">⚡</span>
+                <div style="font-size:1.05rem;font-weight:900;color:#0f172a;">Tool Quét Môn Học Tự Động Từ Thời Khóa Biểu (GDPT 2018)</div>
+                <span style="background:#10b981;color:white;padding:2px 8px;border-radius:12px;font-size:0.7rem;font-weight:800;">Tự Động Chuẩn Hóa</span>
+              </div>
+              <div style="font-size:0.8rem;color:#475569;margin-top:4px;max-width:760px;line-height:1.4;">
+                Quét toàn bộ môn học trong TKB của từng lớp (Khối 6–12). <b>Tự động gộp chuyên đề</b> (Toán + CĐ Toán → Toán; Lý + CĐ Vật lí → Vật lý; Hóa + CĐ Hóa → Hóa học), <b>loại bỏ triệt để các môn không học</b> (VD: 10A1 không học Mỹ thuật → gỡ bỏ; 12C5 học Mỹ thuật, GDKT&amp;PL → tự động nạp; THCS tự động chuẩn hóa KHTN, Sử - Địa), và bỏ các tiết nề nếp (Chào cờ, SHL).
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <button type="button" onclick="openSyncTkbSubjectsModal('10A1')" style="background:#e0f2fe;color:#0284c7;border:1px solid #7dd3fc;padding:7px 12px;border-radius:9px;font-size:0.78rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                🎯 Quét Lớp 10A1
+              </button>
+              <button type="button" onclick="openSyncTkbSubjectsModal('12C5')" style="background:#fce7f3;color:#be185d;border:1px solid #f9a8d4;padding:7px 12px;border-radius:9px;font-size:0.78rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:5px;">
+                🎨 Quét Lớp 12C5
+              </button>
+              <button type="button" onclick="openSyncTkbSubjectsModal('ALL')" style="background:linear-gradient(135deg,#0284c7,#059669);color:white;border:none;padding:8px 16px;border-radius:9px;font-size:0.82rem;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(2,132,199,0.35);">
+                ⚡ Mở Tool Quét 41 Lớp
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- DANH SÁCH MÔN HỌC HIỆN CÓ -->
+        <div class="card-box">
+          <div class="card-box-header" style="flex-wrap:wrap;gap:10px;">
+            <div>
+              <div class="card-box-title">📋 Danh Sách Các Môn Học Đang Hoạt Động (<span id="subjectTableCount">35</span> môn)</div>
+              <div class="card-box-subtitle">Bạn có thể tìm kiếm, lọc theo tổ bộ môn và bấm nút "Xóa Môn" để gỡ bỏ môn học.</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <input type="text" id="searchSubjectInput" placeholder="🔍 Tìm tên môn học..." oninput="renderSubjectListTable()" style="border:1.5px solid #cbd5e1;border-radius:8px;padding:6px 12px;font-size:0.8rem;outline:none;min-width:180px;">
+              <select id="filterSubjectGroupSelect" onchange="renderSubjectListTable()" style="border:1.5px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:0.8rem;background:white;outline:none;">
+                <option value="ALL">Tất cả nhóm bộ môn</option>
+                <option value="Môn Cốt Lõi">Môn Cốt Lõi</option>
+                <option value="Khoa Học Tự Nhiên">Khoa Học Tự Nhiên</option>
+                <option value="Khoa Học Xã Hội">Khoa Học Xã Hội</option>
+                <option value="Công Nghệ - Số Hóa">Công Nghệ - Số Hóa</option>
+                <option value="Thể Chất &amp; An Ninh">Thể Chất &amp; An Ninh</option>
+                <option value="Nghệ Thuật &amp; Kỹ Năng">Nghệ Thuật &amp; Kỹ Năng</option>
+                <option value="Ngoại Ngữ 2">Ngoại Ngữ 2</option>
+                <option value="Chuyên Đề Học Tập">Chuyên Đề Học Tập</option>
+                <option value="Bản Sắc Kon Tum">Bản Sắc Kon Tum</option>
+                <option value="Sáng Tạo Trẻ">Sáng Tạo Trẻ</option>
+                <option value="Môn Tự Chọn Khác">Môn Tự Chọn Khác</option>
+              </select>
+              <select id="filterSubjectLevelSelect" onchange="renderSubjectListTable()" style="border:1.5px solid #cbd5e1;border-radius:8px;padding:6px 10px;font-size:0.8rem;background:white;outline:none;">
+                <option value="ALL">Tất cả cấp học</option>
+                <option value="both">Cả 2 cấp</option>
+                <option value="thcs">Chỉ THCS</option>
+                <option value="thpt">Chỉ THPT</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;">
+            <table class="data-table" style="width:100%;">
+              <thead>
+                <tr>
+                  <th style="width:50px;text-align:center;">STT</th>
+                  <th>Tên Môn Học</th>
+                  <th>Nhóm / Tổ Bộ Môn</th>
+                  <th style="text-align:center;">Cấp Học Áp Dụng</th>
+                  <th style="text-align:center;">Số Học Sinh Đang Học</th>
+                  <th style="text-align:center;">Điểm TB Toàn Trường</th>
+                  <th style="text-align:center;width:170px;">Thao Tác</th>
+                </tr>
+              </thead>
+              <tbody id="subjectTableBody">
+                <!-- Javascript nạp danh sách -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewLms" style="display:none;">
+
+        <!-- BANNER LMS TIÊU ĐỀ & CHIP TÁC GIẢ -->
+        <div class="card-box" style="margin-bottom:14px;background:radial-gradient(circle at 10% 20%, #1e3a5f 0%, #0f172a 100%);border:none;box-shadow:0 10px 25px -5px rgba(15,23,42,0.3);">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div style="color:#38bdf8;font-size:0.74rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;">📋 PHÂN HỆ HỌC TẬP TRỰC TUYẾN &amp; KIỂM TRA ĐÁNH GIÁ (CHUẨN VNEDU)</div>
+              <div style="color:white;font-size:1.25rem;font-weight:900;margin-top:2px;">LMS Giao Bài Tập &amp; Cố Vấn Khắc Phục Lỗi Sai Bằng AI</div>
+              <div style="color:rgba(255,255,255,0.8);font-size:0.78rem;margin-top:4px;">
+                Giáo viên thiết kế bài trắc nghiệm / tự luận, giao cho 1 lớp hoặc nhiều lớp cùng lúc, đặt hạn nộp, theo dõi danh sách học sinh đã làm / chưa làm &amp; Gemini AI phân tích lỗ hổng kiến thức.
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <div style="background:rgba(255,255,255,0.12);padding:5px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);font-size:0.75rem;font-weight:700;color:white;display:inline-flex;align-items:center;gap:6px;">
+                <span>👨‍💻 Sáng kiến:</span> <strong style="color:#fef08a;">Trần Lê Gia Bảo (Lớp 10A1)</strong>
+              </div>
+              <button class="btn-primary" onclick="openLmsCreateTab()" style="background:#0284c7;font-size:0.78rem;padding:7px 14px;display:inline-flex;align-items:center;gap:6px;">
+                <span>➕</span> <span>Thiết Kế Bài Tập Mới</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 THỐNG KÊ NHANH LMS -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;">
+          <div class="kpi-card" style="padding:14px;border-left:4px solid #0284c7;">
+            <div class="kpi-label" style="font-size:0.72rem;">Tổng Số Bài Tập Đã Giao</div>
+            <div class="kpi-value" id="lmsStatTotalAssignments" style="color:#0284c7;font-size:1.8rem;">--</div>
+            <div style="font-size:0.7rem;color:#0369a1;font-weight:600;">Đang mở trên toàn trường</div>
+          </div>
+          <div class="kpi-card" style="padding:14px;border-left:4px solid #10b981;">
+            <div class="kpi-label" style="font-size:0.72rem;">Số Lượt Học Sinh Đã Nộp</div>
+            <div class="kpi-value" id="lmsStatTotalSubmissions" style="color:#10b981;font-size:1.8rem;">--</div>
+            <div style="font-size:0.7rem;color:#15803d;font-weight:600;">Đã chấm điểm &amp; phân tích</div>
+          </div>
+          <div class="kpi-card" style="padding:14px;border-left:4px solid #f59e0b;">
+            <div class="kpi-label" style="font-size:0.72rem;">Tỷ Lệ Nộp Bài Toàn Trường</div>
+            <div class="kpi-value" id="lmsStatAvgRate" style="color:#f59e0b;font-size:1.8rem;">--%</div>
+            <div style="font-size:0.7rem;color:#b45309;font-weight:600;">Tính trên các lớp được giao</div>
+          </div>
+          <div class="kpi-card" style="padding:14px;border-left:4px solid #8b5cf6;">
+            <div class="kpi-label" style="font-size:0.72rem;">Lỗ Hổng Đã Phân Tích (AI)</div>
+            <div class="kpi-value" id="lmsStatAiReports" style="color:#8b5cf6;font-size:1.8rem;">100%</div>
+            <div style="font-size:0.7rem;color:#6d28d9;font-weight:600;">Google Gemini 1.5 Flash</div>
+          </div>
+        </div>
+
+        <!-- TABS ĐIỀU HƯỚNG SUB-VIEW LMS -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;border-bottom:1.5px solid #e2e8f0;padding-bottom:8px;">
+          <div style="display:flex;gap:8px;">
+            <button class="acc-tab-btn active" id="lmsTabBtnList" onclick="switchLmsTab('list')">
+              <span>📑 Danh Sách Bài Tập Đã Giao</span>
+            </button>
+            <button class="acc-tab-btn" id="lmsTabBtnCreate" onclick="switchLmsTab('create')">
+              <span>➕ Bảng Thiết Kế &amp; Giao Bài (Cho 1 hoặc Nhiều Lớp)</span>
+            </button>
+          </div>
+          <div id="lmsFilterRow" style="display:flex;align-items:center;gap:8px;">
+            <label style="font-size:0.75rem;font-weight:700;color:#64748b;">Môn học:</label>
+            <select id="lmsSubjectFilter" onchange="renderLmsAssignmentCards()" style="padding:5px 10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:0.78rem;">
+              <option value="all">-- Tất cả 35 môn --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- SUB-TAB 1: DANH SÁCH BÀI TẬP ĐÃ GIAO -->
+        <div id="lmsSubTabList">
+          <div class="lms-grid-container" id="lmsAssignmentsGrid">
+            <!-- Render các assignment cards bằng Javascript -->
+          </div>
+        </div>
+
+        <!-- SUB-TAB 2: BẢNG THIẾT KẾ BÀI TẬP (CHO 1 HOẶC NHIỀU LỚP) -->
+        <div id="lmsSubTabCreate" style="display:none;">
+          <div class="card-box" style="padding:22px;background:white;border:1.5px solid #e2e8f0;border-radius:14px;box-shadow:0 4px 16px rgba(15,23,42,0.06);">
+            
+            <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px solid #e2e8f0;padding-bottom:12px;margin-bottom:18px;">
+              <div>
+                <h3 style="margin:0;font-size:1.15rem;font-weight:900;color:#0f172a;">🛠️ Bảng Thiết Kế Bài Tập Trực Tuyến</h3>
+                <p style="margin:3px 0 0 0;font-size:0.78rem;color:#64748b;">Soạn đề trắc nghiệm / tự luận, chỉ định lớp học và thiết lập hạn nộp</p>
+              </div>
+              <button type="button" onclick="aiAutoDraftExam()" class="btn-header-action" style="background:#f0fdf4;border-color:#86efac;color:#16a34a;font-weight:800;display:flex;align-items:center;gap:6px;">
+                <span>🤖</span> <span>Gemini AI Soạn Đề Tự Động</span>
+              </button>
+            </div>
+
+            <form id="formCreateAssignment" onsubmit="handleSaveAssignment(event)">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div>
+                  <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">Tiêu đề bài tập <span style="color:#ef4444;">*</span></label>
+                  <input type="text" id="assignTitle" placeholder="VD: Ôn tập Hàm số bậc hai &amp; Bất phương trình - Tuần 4..." required style="width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:0.84rem;">
+                </div>
+                <div>
+                  <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">Môn học <span style="color:#ef4444;">*</span></label>
+                  <select id="assignSubject" required style="width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:0.84rem;">
+                    <!-- JS populate 35 môn -->
+                  </select>
+                </div>
+                <div>
+                  <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">Hình thức</label>
+                  <select id="assignType" style="width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:0.84rem;">
+                    <option value="trac_nghiem">Trắc nghiệm A, B, C, D</option>
+                    <option value="tu_luan">Tự luận nộp bài</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- CHỌN LỚP ĐƯỢC GIAO (MULTI-CLASS SELECTION) -->
+              <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:14px;margin-bottom:14px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+                  <div>
+                    <label style="font-size:0.8rem;font-weight:800;color:#0f172a;">🏫 Chọn Lớp Được Giao Bài Tập (Chọn 1 hoặc Nhiều Lớp): <span style="color:#ef4444;">*</span></label>
+                    <div style="font-size:0.72rem;color:#64748b;">Học sinh thuộc các lớp được tích chọn sẽ nhận được thông báo làm bài trên tài khoản cá nhân.</div>
+                  </div>
+                  <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('all')" style="background:#e0f2fe;color:#0284c7;font-size:0.68rem;font-weight:700;">Tất cả 41 lớp</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr6')" style="background:white;font-size:0.68rem;">Khối 6</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr7')" style="background:white;font-size:0.68rem;">Khối 7</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr8')" style="background:white;font-size:0.68rem;">Khối 8</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr9')" style="background:white;font-size:0.68rem;">Khối 9</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr10')" style="background:white;font-size:0.68rem;">Khối 10</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr11')" style="background:white;font-size:0.68rem;">Khối 11</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('gr12')" style="background:white;font-size:0.68rem;">Khối 12</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('10A1')" style="background:#f0f9ff;color:#0284c7;border-color:#bae6fd;font-size:0.68rem;">10A1</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('12C1')" style="background:#fef3c7;color:#b45309;border-color:#fde68a;font-size:0.68rem;">12C1</button>
+                    <button type="button" class="btn-demo-chip" onclick="quickSelectClasses('clear')" style="background:#fee2e2;color:#b91c1c;border-color:#fca5a5;font-size:0.68rem;">Bỏ chọn hết</button>
+                  </div>
+                </div>
+                <div id="lmsClassCheckboxGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));gap:6px;max-height:160px;overflow-y:auto;padding-right:4px;">
+                  <!-- Checkboxes các lớp -->
+                </div>
+                <div id="lmsSelectedClassesCount" style="font-size:0.74rem;color:#0284c7;font-weight:700;margin-top:8px;">
+                  Đã chọn: 0 lớp
+                </div>
+              </div>
+
+              <!-- THỜI GIAN VÀ THỜI LƯỢNG (THIẾT KẾ TRỰC QUAN KHÔNG BỊ LỖI MÙA MÀNG) -->
+              <div style="display:grid;grid-template-columns:1.2fr 1.2fr 0.8fr;gap:14px;margin-bottom:8px;">
+                <!-- NGÀY GIỜ BẮT ĐẦU -->
+                <div>
+                  <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">
+                    📅 Ngày giờ mở bài
+                  </label>
+                  <div style="display:flex;gap:6px;">
+                    <input type="date" id="assignStartDateDay" onchange="syncLmsDateInputs()" style="flex:1.4;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 10px;font-size:0.84rem;font-weight:700;background:white;">
+                    <select id="assignStartTimeHour" onchange="syncLmsDateInputs()" style="flex:1;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 6px;font-size:0.82rem;font-weight:700;background:white;">
+                      <option value="00:00">00:00</option>
+                      <option value="07:00" selected>07:00 (Sáng)</option>
+                      <option value="08:00">08:00 (Sáng)</option>
+                      <option value="12:00">12:00 (Trưa)</option>
+                      <option value="13:30">13:30 (Chiều)</option>
+                      <option value="19:00">19:00 (Tối)</option>
+                      <option value="23:59">23:59 (Đêm)</option>
+                    </select>
+                  </div>
+                  <input type="hidden" id="assignStartDate">
+                </div>
+
+                <!-- HẠN CHÓT NỘP BÀI -->
+                <div>
+                  <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">
+                    ⏰ Hạn chót nộp bài (Deadline) <span style="color:#ef4444;">*</span>
+                  </label>
+                  <div style="display:flex;gap:6px;">
+                    <input type="date" id="assignDueDateDay" onchange="syncLmsDateInputs()" required style="flex:1.4;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 10px;font-size:0.84rem;font-weight:700;background:white;">
+                    <select id="assignDueTimeHour" onchange="syncLmsDateInputs()" style="flex:1;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 6px;font-size:0.82rem;font-weight:700;background:white;">
+                      <option value="11:30">11:30 (Trưa)</option>
+                      <option value="17:00">17:00 (Chiều)</option>
+                      <option value="21:00">21:00 (Tối)</option>
+                      <option value="22:00">22:00 (Tối)</option>
+                      <option value="23:59" selected>23:59 (Hết ngày)</option>
+                    </select>
+                  </div>
+                  <input type="hidden" id="assignDueDate">
+                </div>
+
+                <!-- THỜI GIAN LÀM BÀI -->
+                <div>
+                  <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">
+                    ⏳ Thời gian làm (Phút)
+                  </label>
+                  <div style="display:flex;gap:6px;align-items:center;">
+                    <input type="number" id="assignDuration" min="5" max="180" value="20" style="width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 10px;font-size:0.84rem;font-weight:700;">
+                  </div>
+                </div>
+              </div>
+
+              <!-- TIỆN ÍCH CHỌN NHANH HẠN CHÓT DEADLINE -->
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap;background:#f8fafc;padding:8px 12px;border-radius:10px;border:1px dashed #cbd5e1;">
+                <span style="font-size:0.74rem;color:#475569;font-weight:800;">⚡ Đặt nhanh hạn chót:</span>
+                <button type="button" onclick="setLmsQuickDeadline('tonight')" class="btn-demo-chip" style="font-size:0.72rem;padding:4px 10px;background:white;">🌙 Tối nay 23:59</button>
+                <button type="button" onclick="setLmsQuickDeadline(1)" class="btn-demo-chip" style="font-size:0.72rem;padding:4px 10px;background:white;">+1 ngày (Mai)</button>
+                <button type="button" onclick="setLmsQuickDeadline(3)" class="btn-demo-chip" style="font-size:0.72rem;padding:4px 10px;background:white;">+3 ngày</button>
+                <button type="button" onclick="setLmsQuickDeadline(7)" class="btn-demo-chip" style="font-size:0.72rem;padding:4px 10px;background:#e0f2fe;color:#0284c7;font-weight:800;border-color:#bae6fd;">📅 +7 ngày (1 tuần)</button>
+                <button type="button" onclick="setLmsQuickDeadline('weekend')" class="btn-demo-chip" style="font-size:0.72rem;padding:4px 10px;background:white;">🏖️ Chủ Nhật này</button>
+                <button type="button" onclick="setLmsDateDefaults(true)" class="btn-demo-chip" style="font-size:0.72rem;padding:4px 10px;color:#d97706;border-color:#fde68a;background:white;">🔄 Mặc định</button>
+              </div>
+
+              <!-- TÙY CHỌN NÂNG CAO: AI TỰ CHẤM & PHÂN TÍCH LỖI TỰ LUẬN -->
+              <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+                <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:800;font-size:0.82rem;color:#15803d;">
+                  <input type="checkbox" id="assignAiAutoGradeEssay" checked style="accent-color:#16a34a;width:17px;height:17px;">
+                  <span>🤖 Bật chế độ Gemini AI tự động chấm &amp; chỉ ra lỗi sai chi tiết cho câu tự luận</span>
+                </label>
+                <span style="font-size:0.72rem;color:#166534;background:rgba(255,255,255,0.75);padding:2px 8px;border-radius:8px;font-weight:700;">
+                  ⭐ Chuẩn Sư Phạm 2026
+                </span>
+              </div>
+
+              <!-- MÔ TẢ HƯỚNG DẪN -->
+              <div style="margin-bottom:16px;">
+                <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:5px;">Ghi chú &amp; Hướng dẫn của giáo viên</label>
+                <textarea id="assignDesc" rows="2" placeholder="Nhập yêu cầu làm bài, tài liệu tham khảo..." style="width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:8px 12px;font-size:0.84rem;font-family:var(--font-family);resize:vertical;"></textarea>
+              </div>
+
+              <!-- DANH SÁCH CÂU HỎI (QUESTION BUILDER) -->
+              <div style="border-top:1.5px solid #e2e8f0;padding-top:16px;margin-bottom:18px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+                  <div>
+                    <h4 style="margin:0;font-size:0.95rem;font-weight:900;color:#0f172a;display:flex;align-items:center;gap:8px;">
+                      <span>✏️ Soạn Bài Tập &amp; Câu Hỏi Trắc Nghiệm</span>
+                      <span style="background:#e0f2fe;color:#0284c7;padding:2px 8px;border-radius:10px;font-size:0.75rem;font-weight:800;">
+                        <span id="lmsQuestionCount">0</span> câu hỏi
+                      </span>
+                    </h4>
+                    <div style="font-size:0.72rem;color:#64748b;margin-top:2px;">Điền nội dung câu hỏi, 4 phương án A-B-C-D, chọn đáp án đúng và lời giải chi tiết cho AI phân tích.</div>
+                  </div>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button type="button" onclick="aiAutoDraftExam()" class="btn-demo-chip" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:#86efac;color:#15803d;font-size:0.76rem;font-weight:800;padding:6px 12px;">
+                      <span>🤖</span> <span>Gemini AI Soạn Đề Tự Động (4 Câu)</span>
+                    </button>
+                    <button type="button" onclick="addQuestionItem()" class="btn-demo-chip" style="background:#f0f9ff;border-color:#38bdf8;color:#0284c7;font-size:0.76rem;font-weight:800;padding:6px 12px;">
+                      <span>➕</span> <span>Thêm Câu Trắc Nghiệm</span>
+                    </button>
+                    <button type="button" onclick="addEssayQuestionItem()" class="btn-demo-chip" style="background:#faf5ff;border-color:#c084fc;color:#7e22ce;font-size:0.76rem;font-weight:800;padding:6px 12px;">
+                      <span>✍️</span> <span>Thêm Câu Tự Luận</span>
+                    </button>
+                    <button type="button" onclick="loadSubjectPresetExam('Toán')" class="btn-demo-chip" style="background:#eff6ff;color:#1e40af;border-color:#bfdbfe;font-size:0.72rem;padding:5px 9px;">
+                      <span>📐</span> <span>Mẫu Toán</span>
+                    </button>
+                    <button type="button" onclick="loadSubjectPresetExam('Ngữ Văn')" class="btn-demo-chip" style="background:#fefce8;color:#854d0e;border-color:#fef08a;font-size:0.72rem;padding:5px 9px;">
+                      <span>📚</span> <span>Mẫu Văn</span>
+                    </button>
+                    <button type="button" onclick="loadSubjectPresetExam('Tiếng Anh')" class="btn-demo-chip" style="background:#ecfdf5;color:#065f46;border-color:#a7f3d0;font-size:0.72rem;padding:5px 9px;">
+                      <span>🌐</span> <span>Mẫu Anh</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div id="lmsQuestionsList" style="min-height:80px;display:flex;flex-direction:column;gap:12px;">
+                  <!-- Container chứa các câu hỏi -->
+                </div>
+              </div>
+
+              <!-- NÚT HÀNH ĐỘNG GIAO BÀI -->
+              <div style="display:flex;justify-content:flex-end;gap:10px;padding-top:14px;border-top:1.5px solid #e2e8f0;">
+                <button type="button" onclick="switchLmsTab('list')" class="btn-demo-chip" style="background:#f1f5f9;color:#475569;font-size:0.82rem;padding:9px 18px;">
+                  Hủy Bỏ
+                </button>
+                <button type="submit" class="btn-primary" style="background:var(--primary-glass-gradient);padding:9px 24px;font-size:0.88rem;display:flex;align-items:center;gap:6px;">
+                  <span>🚀</span> <span>Xuất Bản &amp; Giao Bài Tập Cho Học Sinh</span>
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewTkb" style="display:none;">
+
+        <!-- BANNER HERO LIQUID GLASS -->
+        <div class="tkb-hero-banner">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:relative;z-index:2;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+                <span style="font-size:1.4rem;">📅</span>
+                <span style="font-size:0.76rem;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:#38bdf8;background:rgba(56,189,248,0.18);padding:3px 10px;border-radius:12px;border:1px solid rgba(56,189,248,0.35);">
+                  HỆ THỐNG THỜI KHÓA BIỂU SỐ HÓA
+                </span>
+                <span style="font-size:0.74rem;background:rgba(16,185,129,0.2);color:#34d399;padding:3px 10px;border-radius:12px;font-weight:800;border:1px solid rgba(52,211,153,0.35);">
+                  🟢 Đồng Bộ Tự Động
+                </span>
+              </div>
+              <h2 style="font-size:1.35rem;font-weight:900;margin:0;color:white;letter-spacing:-0.3px;">
+                Thời Khóa Biểu — Trường THCS &amp; THPT Liên Việt Kontum
+              </h2>
+              <div style="font-size:0.8rem;color:rgba(224,242,254,0.85);margin-top:5px;">
+                Tự động đọc, phân tích và nạp thời khóa biểu từ cổng trường học lên toàn bộ 41 lớp học · Phân bố 2 buổi Sáng / Chiều
+              </div>
+              <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                <span style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);color:white;padding:3px 10px;border-radius:12px;font-size:0.74rem;font-weight:700;">
+                  👨‍💻 Tác giả: Trần Lê Gia Bảo (Lớp 10A1)
+                </span>
+                <span style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);color:white;padding:3px 10px;border-radius:12px;font-size:0.74rem;font-weight:700;">
+                  🏫 41 Lớp Học Toàn Trường
+                </span>
+                <span style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.25);color:white;padding:3px 10px;border-radius:12px;font-size:0.74rem;font-weight:700;">
+                  📚 35+ Môn Học Tích Hợp
+                </span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <span style="background:rgba(255,255,255,0.15);padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:800;color:white;border:1px solid rgba(255,255,255,0.25);">
+                📅 Năm học 2026 – 2027 · HK1
+              </span>
+              <button onclick="printTkb()" class="tkb-btn-primary" style="background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.4);color:white;box-shadow:none;">
+                🖨️ In Thời Khóa Biểu
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOOL ĐỌC & NẠP TKB TỰ ĐỘNG (URL + STT + HTML PARSER) -->
+        <div class="tkb-importer-box">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:28px;height:28px;border-radius:8px;background:#0284c7;color:white;display:flex;align-items:center;justify-content:center;font-size:0.9rem;">
+                🌐
+              </div>
+              <div>
+                <div style="font-weight:800;font-size:0.88rem;color:#0f172a;">Tool Đọc &amp; Nạp Thời Khóa Biểu Tự Động (LVKT TKB Parser Theo STT 1 ➔ 41)</div>
+                <div style="font-size:0.72rem;color:#64748b;">Hỗ trợ đọc trực tiếp theo URL (tkb_2bclass_1.html ➔ tkb_2bclass_41.html) hoặc theo Số Thứ Tự STT 1 đến 41</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button onclick="importAll41Classes()" class="tkb-btn-primary" style="font-size:0.76rem;padding:6px 14px;background:linear-gradient(135deg,#059669,#047857);box-shadow:0 3px 10px rgba(5,150,105,0.3);">
+                <span>⚡</span> <span>Nạp Toàn Bộ 41 Lớp Trường Kon Tum</span>
+              </button>
+              <button onclick="openTkbHtmlModal()" class="tkb-btn-outline" style="font-size:0.76rem;padding:6px 12px;">
+                <span>📋</span> <span>Dán Mã HTML / Bảng TKB</span>
+              </button>
+              <button onclick="restoreDefaultTimetables()" class="tkb-btn-outline" style="font-size:0.76rem;padding:6px 12px;" title="Khôi phục bộ TKB chuẩn gốc của trường Kon Tum">
+                <span>🔄</span> <span>Khôi Phục Gốc</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- THANH NHẬP URL HOẶC STT (1 - 41) -->
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <div class="tkb-url-wrapper" style="flex:1;">
+              <span style="font-size:0.95rem;margin-right:8px;color:#0284c7;">🔗</span>
+              <input type="text" id="tkbSourceUrl" class="tkb-url-input" value="http://lienvietkontum.quangngai.edu.vn/TKB/tkb_2bclass_27.html" placeholder="Nhập URL (VD: http://lienvietkontum.quangngai.edu.vn/TKB/tkb_2bclass_1.html) hoặc nhập STT 1 đến 41...">
+              <span style="font-size:0.72rem;background:#e0f2fe;color:#0284c7;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap;" id="tkbSourceBadge">
+                STT 27: 10A1
+              </span>
+            </div>
+            <button onclick="importTkbFromSchoolUrl()" class="tkb-btn-primary" id="btnImportTkb">
+              <span>⚡</span> <span>Đọc &amp; Nạp TKB (Theo URL / STT)</span>
+            </button>
+            <button onclick="importAll41Classes()" class="tkb-btn-primary" style="background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 4px 12px rgba(16,185,129,0.25);" id="btnImportAllTkb" title="Nạp đồng loạt toàn bộ 41 lớp từ dữ liệu trường">
+              <span>📚</span> <span>Nạp Toàn Bộ 41 Lớp</span>
+            </button>
+          </div>
+
+          <!-- BẢNG CHỌN NHANH 41 LỚP THEO SỐ THỨ TỰ (STT 1 ĐẾN 41) -->
+          <div style="margin-top:12px;padding-top:12px;border-top:1px dashed #bae6fd;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-size:0.75rem;font-weight:800;color:#0369a1;">
+                🏫 BẤM CHỌN NHANH LỚP THEO STT (1 ➔ 41) TỪ CỔNG TKB TRƯỜNG LIÊN VIỆT KON TUM:
+              </span>
+              <span style="font-size:0.7rem;color:#64748b;">(Click vào nút STT bất kỳ để nạp TKB lớp đó)</span>
+            </div>
+            
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:0.72rem;">
+              <!-- Khối 6 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#475569;min-width:55px;">Khối 6:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(1)" id="btnStt1">1. 6CATBA</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(2)" id="btnStt2">2. 6CONCO</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(3)" id="btnStt3">3. 6DAOYEN</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(4)" id="btnStt4">4. 6PHUQUY</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(5)" id="btnStt5">5. 6SINHTON</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(6)" id="btnStt6">6. 6SONGTU</button>
+              </div>
+
+              <!-- Khối 7 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#475569;min-width:55px;">Khối 7:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(7)" id="btnStt7">7. 7BINHBA</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(8)" id="btnStt8">8. 7CONDAO</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(9)" id="btnStt9">9. 7HOANGSA</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(10)" id="btnStt10">10. 7LYSON</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(11)" id="btnStt11">11. 7PHUQUOC</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(12)" id="btnStt12">12. 7TRUONGSA</button>
+              </div>
+
+              <!-- Khối 8 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#475569;min-width:55px;">Khối 8:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(13)" id="btnStt13">13. 8BLONGVI</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(14)" id="btnStt14">14. 8BIENSON</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(15)" id="btnStt15">15. 8GACMA</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(16)" id="btnStt16">16. 8HATIEN</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(17)" id="btnStt17">17. 8LONGCHAU</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(18)" id="btnStt18">18. 8PHULAM</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(19)" id="btnStt19">19. 8SONDUONG</button>
+              </div>
+
+              <!-- Khối 9 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#475569;min-width:55px;">Khối 9:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(20)" id="btnStt20">20. 9BINHHUNG</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(21)" id="btnStt21">21. 9COTO</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(22)" id="btnStt22">22. 9CONSON</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(23)" id="btnStt23">23. 9NAMDU</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(24)" id="btnStt24">24. 9THOCHU</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(25)" id="btnStt25">25. 9TUANCHAU</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(26)" id="btnStt26">26. 9VANDON</button>
+              </div>
+
+              <!-- Khối 10 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#0284c7;min-width:55px;">Khối 10:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(27)" id="btnStt27" style="background:#e0f2fe;color:#0284c7;font-weight:800;border-color:#38bdf8;">27. 10A1 ⭐</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(28)" id="btnStt28">28. 10A2</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(29)" id="btnStt29">29. 10A3</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(30)" id="btnStt30">30. 10A4</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(31)" id="btnStt31">31. 10A5</button>
+              </div>
+
+              <!-- Khối 11 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#475569;min-width:55px;">Khối 11:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(32)" id="btnStt32">32. 11B1</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(33)" id="btnStt33">33. 11B2</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(34)" id="btnStt34">34. 11B3</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(35)" id="btnStt35">35. 11B4</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(36)" id="btnStt36">36. 11B5</button>
+              </div>
+
+              <!-- Khối 12 -->
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span style="font-weight:800;color:#b45309;min-width:55px;">Khối 12:</span>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(37)" id="btnStt37" style="background:#fef3c7;color:#b45309;font-weight:800;border-color:#fde68a;">37. 12C1</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(38)" id="btnStt38">38. 12C2</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(39)" id="btnStt39">39. 12C3</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(40)" id="btnStt40">40. 12C4</button>
+                <button type="button" class="btn-demo-chip" onclick="selectClassByStt(41)" id="btnStt41">41. 12C5</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BỘ CHỌN LỚP & ĐIỀU KHIỂN HIỂN THỊ -->
+        <div class="card-box" style="margin-bottom:14px;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label style="font-size:0.82rem;font-weight:800;color:#0f172a;">🏫 Chọn Lớp (41 Lớp):</label>
+              <select class="filter-select" id="tkbClassSelect" onchange="onTkbClassChange(this.value)" style="font-weight:700;border-color:#38bdf8;">
+                <optgroup label="── THPT Khối 10 (STT 27 - 31) ──">
+                  <option value="10A1" selected>⭐ STT 27: 10A1 (Lớp Trần Lê Gia Bảo)</option>
+                  <option value="10A2">STT 28: 10A2</option>
+                  <option value="10A3">STT 29: 10A3</option>
+                  <option value="10A4">STT 30: 10A4</option>
+                  <option value="10A5">STT 31: 10A5</option>
+                </optgroup>
+                <optgroup label="── THPT Khối 11 (STT 32 - 36) ──">
+                  <option value="11B1">STT 32: 11B1</option>
+                  <option value="11B2">STT 33: 11B2</option>
+                  <option value="11B3">STT 34: 11B3</option>
+                  <option value="11B4">STT 35: 11B4</option>
+                  <option value="11B5">STT 36: 11B5</option>
+                </optgroup>
+                <optgroup label="── THPT Khối 12 (STT 37 - 41) ──">
+                  <option value="12C1">STT 37: 12C1 (Lớp Phan Ánh Thư)</option>
+                  <option value="12C2">STT 38: 12C2</option>
+                  <option value="12C3">STT 39: 12C3</option>
+                  <option value="12C4">STT 40: 12C4</option>
+                  <option value="12C5">STT 41: 12C5</option>
+                </optgroup>
+                <optgroup label="── THCS Khối 8 (STT 13 - 19) ──">
+                  <option value="8BLONGVI">STT 13: 8 Bạch Long Vĩ (8BLONGVI)</option>
+                  <option value="8BIENSON">STT 14: 8 Biện Sơn (8BIENSON)</option>
+                  <option value="8GACMA">STT 15: 8 Gạc Ma (8GACMA)</option>
+                  <option value="8HATIEN">STT 16: 8 Hà Tiên (8HATIEN)</option>
+                  <option value="8LONGCHAU">STT 17: 8 Long Châu (8LONGCHAU)</option>
+                  <option value="8PHULAM">STT 18: 8 Phú Lâm (8PHULAM)</option>
+                  <option value="8SONDUONG">STT 19: 8 Sơn Dương (8SONDUONG)</option>
+                </optgroup>
+                <optgroup label="── THCS Khối 9 (STT 20 - 26) ──">
+                  <option value="9BINHHUNG">STT 20: 9 Bình Hưng (9BINHHUNG)</option>
+                  <option value="9COTO">STT 21: 9 Cô Tô (9COTO)</option>
+                  <option value="9CONSON">STT 22: 9 Côn Sơn (9CONSON)</option>
+                  <option value="9NAMDU">STT 23: 9 Nam Du (9NAMDU)</option>
+                  <option value="9THOCHU">STT 24: 9 Thổ Chu (9THOCHU)</option>
+                  <option value="9TUANCHAU">STT 25: 9 Tuần Châu (9TUANCHAU)</option>
+                  <option value="9VANDON">STT 26: 9 Vân Đồn (9VANDON)</option>
+                </optgroup>
+                <optgroup label="── THCS Khối 6 (STT 1 - 6) ──">
+                  <option value="6CATBA">STT 1: 6 Cát Bà (6CATBA)</option>
+                  <option value="6CONCO">STT 2: 6 Cồn Cỏ (6CONCO)</option>
+                  <option value="6DAOYEN">STT 3: 6 Đảo Yến (6DAOYEN)</option>
+                  <option value="6PHUQUY">STT 4: 6 Phú Quý (6PHUQUY)</option>
+                  <option value="6SINHTON">STT 5: 6 Sinh Tồn (6SINHTON)</option>
+                  <option value="6SONGTU">STT 6: 6 Song Tử (6SONGTU)</option>
+                </optgroup>
+                <optgroup label="── THCS Khối 7 (STT 7 - 12) ──">
+                  <option value="7BINHBA">STT 7: 7 Bình Ba (7BINHBA)</option>
+                  <option value="7CONDAO">STT 8: 7 Côn Đảo (7CONDAO)</option>
+                  <option value="7HOANGSA">STT 9: 7 Hoàng Sa (7HOANGSA)</option>
+                  <option value="7LYSON">STT 10: 7 Lý Sơn (7LYSON)</option>
+                  <option value="7PHUQUOC">STT 11: 7 Phú Quốc (7PHUQUOC)</option>
+                  <option value="7TRUONGSA">STT 12: 7 Trường Sa (7TRUONGSA)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:6px;">
+              <label style="font-size:0.82rem;font-weight:800;color:#0f172a;">☀️ Buổi học:</label>
+              <select class="filter-select" id="tkbSessionSelect" onchange="onTkbSessionChange(this.value)">
+                <option value="all">Toàn bộ ngày (Sáng + Chiều)</option>
+                <option value="morning">☀️ Buổi Sáng (Tiết 1 – 5)</option>
+                <option value="afternoon">🌆 Buổi Chiều (Tiết 1 – 4)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div id="tkbStatusBadge" style="font-size:0.75rem;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;padding:4px 10px;border-radius:12px;font-weight:700;">
+              ✨ Đã đồng bộ 41/41 lớp
+            </div>
+            <button onclick="openTkbSlotModalForNew()" class="btn-demo-chip" style="background:#e0f2fe;color:#0284c7;border-color:#7dd3fc;padding:6px 12px;font-size:0.76rem;font-weight:800;">
+              <span>➕ Thêm / Chỉnh Tiết Học</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- BẢNG LƯỚI THỜI KHÓA BIỂU (RENDER BỞI JAVASCRIPT) -->
+        <div class="tkb-table-card">
+          <div style="padding:14px 18px;border-bottom:1.5px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:1.3rem;">📅</span>
+              <div>
+                <div style="font-size:0.95rem;font-weight:900;color:#0f172a;" id="tkbTableHeading">
+                  Thời Khóa Biểu — Lớp 10A1
+                </div>
+                <div style="font-size:0.72rem;color:#64748b;" id="tkbTableSubheading">
+                  Áp dụng từ Học kỳ 1 Năm học 2026 – 2027 · Bấm vào ô tiết bất kỳ để chỉnh sửa nhanh
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;" id="tkbTodayNotice">
+              <!-- Hiển thị Thứ hôm nay -->
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;" id="tkbGridContainer">
+            <!-- Bảng TKB sẽ được tạo ra tại đây -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewHanhKiem" style="display:none;">
+        <div class="card-box" style="margin-bottom:14px;">
+          <div class="card-box-header">
+            <div>
+              <div class="card-box-title">🎭 Quản Lý Hạnh Kiểm &amp; Nền Nếp Học Sinh</div>
+              <div class="card-box-subtitle">Theo dõi rèn luyện đạo đức, chuyên cần và chấp hành nội quy toàn trường</div>
+            </div>
+            <button class="btn-header-action" onclick="printReport()">🖨️ In Báo Cáo HK</button>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;align-items:center;">
+            <select class="filter-select" id="hkClassSelect" onchange="renderHanhKiemView()">
+              <option value="ALL">Tất cả 41 lớp toàn trường</option>
+              <optgroup label="── THCS Khối 6 ──"><option>6 Cát Bà</option><option>6 Cồn Cỏ</option><option>6 Đảo Yến</option><option>6 Phú Quý</option><option>6 Sinh Tồn</option><option>6 Song Tử</option></optgroup>
+              <optgroup label="── THCS Khối 7 ──"><option>7 Bình Ba</option><option>7 Côn Đảo</option><option>7 Hoàng Sa</option><option>7 Lý Sơn</option><option>7 Phú Quốc</option><option>7 Trường Sa</option></optgroup>
+              <optgroup label="── THCS Khối 8 ──"><option>8 Bạch Long Vĩ</option><option>8 Biện Sơn</option><option>8 Gạc Ma</option><option>8 Hà Tiên</option><option>8 Long Châu</option><option>8 Phú Lâm</option><option>8 Sơn Dương</option></optgroup>
+              <optgroup label="── THCS Khối 9 ──"><option>9 Bình Hưng</option><option>9 Cô Tô</option><option>9 Côn Sơn</option><option>9 Nam Du</option><option>9 Thổ Chu</option><option>9 Tuần Châu</option><option>9 Vân Đồn</option></optgroup>
+              <optgroup label="── THPT Khối 10 ──"><option>10A1</option><option>10A2</option><option>10A3</option><option>10A4</option><option>10A5</option></optgroup>
+              <optgroup label="── THPT Khối 11 ──"><option>11B1</option><option>11B2</option><option>11B3</option><option>11B4</option><option>11B5</option></optgroup>
+              <optgroup label="── THPT Khối 12 ──"><option>12C1</option><option>12C2</option><option>12C3</option><option>12C4</option><option>12C5</option></optgroup>
+            </select>
+            <select class="filter-select" id="hkLevelSelect" onchange="renderHanhKiemView()">
+              <option value="ALL">Tất cả mức hạnh kiểm</option>
+              <option value="Tốt">🌟 Hạnh kiểm Tốt</option>
+              <option value="Khá">👍 Hạnh kiểm Khá</option>
+              <option value="Trung Bình">➖ Hạnh kiểm Trung Bình</option>
+              <option value="Yếu">⚠️ Hạnh kiểm Yếu</option>
+            </select>
+            <input type="text" class="search-input-box" id="hkSearch" placeholder="🔍 Tìm học sinh..." oninput="renderHanhKiemView()" style="max-width:210px;">
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px;" id="hkStatCards"></div>
+
+        <div class="card-box" style="padding:0;overflow:auto;">
+          <table class="data-table" id="hkTable">
+            <thead>
+              <tr>
+                <th>Mã HS</th><th>Họ và Tên</th><th>Lớp</th>
+                <th>Điểm TB</th><th>Học Lực</th>
+                <th style="text-align:center;">Số buổi vắng</th><th>SĐT Phụ Huynh</th>
+                <th>Xếp Loại Hạnh Kiểm</th><th>Nhận Xét Rèn Luyện</th>
+                <th style="text-align:right;">Sửa HK</th>
+              </tr>
+            </thead>
+            <tbody id="hkTableBody"></tbody>
+          </table>
+          <div style="padding:12px 18px;border-top:1px solid var(--border-light);display:flex;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);background:#fafafa;">
+            <span id="hkCountLabel">--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewAddStudent" style="display:none;">
+        <div class="form-view-card">
+          <div class="form-view-title">➕ Thêm Mới Học Sinh &amp; Phân Tích AI</div>
+          <div class="form-view-sub">Nhập thông tin cá nhân và điểm — Thuật toán AI tự động phân tích và gắn mã định danh.</div>
+          <form id="createStudentForm" onsubmit="handleCreateStudent(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-row"><label>Mã học sinh *</label><input type="text" id="newStudentId" required placeholder="VD: HS225"></div>
+              <div class="form-row"><label>Họ và tên học sinh *</label><input type="text" id="newStudentName" required placeholder="VD: Nguyễn Văn Hoàng"></div>
+              <div class="form-row">
+                <label>Giới tính *</label>
+                <select id="newStudentGender"><option value="Nam">Nam</option><option value="Nữ">Nữ</option></select>
+              </div>
+              <div class="form-row">
+                <label>Lớp học *</label>
+                <select id="newStudentClass">
+                  <optgroup label="── THCS Khối 6 ──"><option>6 Cát Bà</option><option>6 Cồn Cỏ</option><option>6 Đảo Yến</option><option>6 Phú Quý</option><option>6 Sinh Tồn</option><option>6 Song Tử</option></optgroup>
+                  <optgroup label="── THCS Khối 7 ──"><option>7 Bình Ba</option><option>7 Côn Đảo</option><option>7 Hoàng Sa</option><option>7 Lý Sơn</option><option>7 Phú Quốc</option><option>7 Trường Sa</option></optgroup>
+                  <optgroup label="── THCS Khối 8 ──"><option>8 Bạch Long Vĩ</option><option>8 Biện Sơn</option><option>8 Gạc Ma</option><option>8 Hà Tiên</option><option>8 Long Châu</option><option>8 Phú Lâm</option><option>8 Sơn Dương</option></optgroup>
+                  <optgroup label="── THCS Khối 9 ──"><option>9 Bình Hưng</option><option>9 Cô Tô</option><option>9 Côn Sơn</option><option>9 Nam Du</option><option>9 Thổ Chu</option><option>9 Tuần Châu</option><option>9 Vân Đồn</option></optgroup>
+                  <optgroup label="── THPT Khối 10 ──"><option>10A1</option><option>10A2</option><option>10A3</option><option>10A4</option><option>10A5</option></optgroup>
+                  <optgroup label="── THPT Khối 11 ──"><option>11B1</option><option>11B2</option><option>11B3</option><option>11B4</option><option>11B5</option></optgroup>
+                  <optgroup label="── THPT Khối 12 ──"><option>12C1</option><option>12C2</option><option>12C3</option><option>12C4</option><option>12C5</option></optgroup>
+                </select>
+              </div>
+              <div class="form-row"><label>Họ tên phụ huynh</label><input type="text" id="newParentName" placeholder="VD: Nguyễn Văn Long (Bố)"></div>
+              <div class="form-row"><label>Số điện thoại phụ huynh *</label><input type="text" id="newParentPhone" required placeholder="VD: 0984.567.890"></div>
+              <div class="form-row" style="grid-column: span 2;"><label>Địa chỉ thường trú</label><input type="text" id="newAddress" placeholder="VD: P. Thắng Lợi, TP. Kon Tum"></div>
+              <div class="form-row"><label>Điểm kiểm tra các tuần *</label><input type="text" id="newScores" required placeholder="VD: 8.0, 7.5, 7.0, 6.5"></div>
+              <div class="form-row"><label>Tỷ lệ bài tập (0 – 1) *</label><input type="number" step="0.05" min="0" max="1" id="newHwRate" required value="0.75"></div>
+              <div class="form-row"><label>Số buổi vắng *</label><input type="number" min="0" max="30" id="newAbsences" required value="1"></div>
+            </div>
+            
+            <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px;margin:14px 0;">
+              <div style="font-weight:800;font-size:0.84rem;color:#0284c7;margin-bottom:8px;">🔑 Cấp tài khoản đăng nhập Cổng Học Sinh (Tùy chọn)</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="form-row" style="margin:0;"><label>Tên đăng nhập</label><input type="text" id="newAccUsername" placeholder="VD: hocsinh225"></div>
+                <div class="form-row" style="margin:0;"><label>Mật khẩu</label><input type="text" id="newAccPassword" placeholder="VD: hs2026@lv"></div>
+              </div>
+            </div>
+
+            <button type="submit" class="form-btn-submit">💾 Lưu Học Sinh &amp; Phân Tích AI Ngay</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewAccounts" style="display:none;">
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+          <button class="acc-tab-btn active" id="tabBGH"  onclick="switchAccTab('bgh')">🏛️ Ban Giám Hiệu</button>
+          <button class="acc-tab-btn"        id="tabTPT"  onclick="switchAccTab('tpt')">🎗️ Tổng Phụ Trách</button>
+          <button class="acc-tab-btn"        id="tabGVCN" onclick="switchAccTab('gvcn')">📋 GVCN</button>
+          <button class="acc-tab-btn"        id="tabGVBM" onclick="switchAccTab('gvbm')">📖 GVBM</button>
+          <button class="acc-tab-btn"        id="tabAll"  onclick="switchAccTab('all')">👥 Tất Cả Tài Khoản</button>
+        </div>
+
+        <div id="accFormBgh" class="form-view-card">
+          <div class="form-view-title">🏛️ Tạo Tài Khoản Ban Giám Hiệu (Quản Lý)</div>
+          <div class="form-view-sub">Xem toàn trường, quản lý giáo viên và học sinh. Chỉ Admin Tổng mới có quyền tạo.</div>
+          <form onsubmit="handleCreateTeacher(event,'manager')">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-row"><label>Tên đăng nhập *</label><input type="text" id="bgh_user" required placeholder="VD: phohieuptthao"></div>
+              <div class="form-row"><label>Mật khẩu *</label><input type="text" id="bgh_pass" required placeholder="VD: bgh2026@lv"></div>
+              <div class="form-row"><label>Họ và tên *</label><input type="text" id="bgh_name" required placeholder="VD: Thầy Nguyễn Văn Hùng"></div>
+              <div class="form-row"><label>Chức vụ</label><select id="bgh_chucvu"><option>Hiệu Trưởng</option><option>Phó Hiệu Trưởng</option><option>Trưởng Ban Giám Hiệu</option></select></div>
+            </div>
+            <button type="submit" class="form-btn-submit">➕ Tạo Tài Khoản BGH</button>
+          </form>
+        </div>
+
+        <div id="accFormTpt" class="form-view-card" style="display:none;">
+          <div class="form-view-title">🎗️ Tạo Tài Khoản Tổng Phụ Trách</div>
+          <div class="form-view-sub">Quản lý nền nếp, hoạt động phong trào và hạnh kiểm toàn trường.</div>
+          <form onsubmit="handleCreateTeacher(event,'supervisor')">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-row"><label>Tên đăng nhập *</label><input type="text" id="tpt_user" required placeholder="VD: tongphutrach2026"></div>
+              <div class="form-row"><label>Mật khẩu *</label><input type="text" id="tpt_pass" required placeholder="VD: tpt2026@lv"></div>
+              <div class="form-row"><label>Họ và tên *</label><input type="text" id="tpt_name" required placeholder="VD: Thầy Trần Minh Hòa"></div>
+            </div>
+            <button type="submit" class="form-btn-submit">➕ Tạo Tài Khoản TPT</button>
+          </form>
+        </div>
+
+        <div id="accFormGvcn" class="form-view-card" style="display:none;">
+          <div class="form-view-title">📋 Tạo Tài Khoản Giáo Viên Chủ Nhiệm (GVCN)</div>
+          <div class="form-view-sub">Hệ thống tự động lọc đúng lớp phụ trách khi GVCN đăng nhập.</div>
+          <form onsubmit="handleCreateTeacher(event,'homeroom_teacher')">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-row"><label>Tên đăng nhập *</label><input type="text" id="gvcn_user" required placeholder="VD: gvcn_12c1_hung"></div>
+              <div class="form-row"><label>Mật khẩu *</label><input type="text" id="gvcn_pass" required placeholder="VD: gvcn2026@lv"></div>
+              <div class="form-row"><label>Họ và tên GV *</label><input type="text" id="gvcn_name" required placeholder="VD: Cô Lê Thị Hương"></div>
+              <div class="form-row">
+                <label>Lớp phụ trách *</label>
+                <select id="gvcn_class">
+                  <optgroup label="── THCS Khối 6 ──"><option>6 Cát Bà</option><option>6 Cồn Cỏ</option><option>6 Đảo Yến</option><option>6 Phú Quý</option><option>6 Sinh Tồn</option><option>6 Song Tử</option></optgroup>
+                  <optgroup label="── THCS Khối 7 ──"><option>7 Bình Ba</option><option>7 Côn Đảo</option><option>7 Hoàng Sa</option><option>7 Lý Sơn</option><option>7 Phú Quốc</option><option>7 Trường Sa</option></optgroup>
+                  <optgroup label="── THCS Khối 8 ──"><option>8 Bạch Long Vĩ</option><option>8 Biện Sơn</option><option>8 Gạc Ma</option><option>8 Hà Tiên</option><option>8 Long Châu</option><option>8 Phú Lâm</option><option>8 Sơn Dương</option></optgroup>
+                  <optgroup label="── THCS Khối 9 ──"><option>9 Bình Hưng</option><option>9 Cô Tô</option><option>9 Côn Sơn</option><option>9 Nam Du</option><option>9 Thổ Chu</option><option>9 Tuần Châu</option><option>9 Vân Đồn</option></optgroup>
+                  <optgroup label="── THPT Khối 10 ──"><option>10A1</option><option>10A2</option><option>10A3</option><option>10A4</option><option>10A5</option></optgroup>
+                  <optgroup label="── THPT Khối 11 ──"><option>11B1</option><option>11B2</option><option>11B3</option><option>11B4</option><option>11B5</option></optgroup>
+                  <optgroup label="── THPT Khối 12 ──"><option>12C1</option><option>12C2</option><option>12C3</option><option>12C4</option><option>12C5</option></optgroup>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="form-btn-submit">➕ Tạo Tài Khoản GVCN</button>
+          </form>
+        </div>
+
+        <div id="accFormGvbm" class="form-view-card" style="display:none;">
+          <div class="form-view-title">📖 Tạo Tài Khoản Giáo Viên Bộ Môn (GVBM)</div>
+          <div class="form-view-sub">Theo dõi và quản lý điểm số bộ môn phụ trách trên toàn trường.</div>
+          <form onsubmit="handleCreateTeacher(event,'subject_teacher')">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-row"><label>Tên đăng nhập *</label><input type="text" id="gvbm_user" required placeholder="VD: gvbm_toan_duc"></div>
+              <div class="form-row"><label>Mật khẩu *</label><input type="text" id="gvbm_pass" required placeholder="VD: gvbm2026@lv"></div>
+              <div class="form-row"><label>Họ và tên GV *</label><input type="text" id="gvbm_name" required placeholder="VD: Thầy Phạm Văn Đức"></div>
+              <div class="form-row">
+                <label>Bộ môn phụ trách *</label>
+                <select id="gvbm_subject">
+                  <optgroup label="── Môn Văn Hóa Cốt Lõi ──">
+                    <option>Toán</option><option>Ngữ Văn</option><option>Tiếng Anh</option>
+                    <option>Vật Lý</option><option>Hóa Học</option><option>Sinh Học</option>
+                    <option>Lịch Sử</option><option>Địa Lý</option>
+                  </optgroup>
+                  <optgroup label="── Công Dân &amp; Pháp Luật ──">
+                    <option>Giáo Dục Công Dân</option><option>GD Kinh Tế &amp; Pháp Luật</option>
+                  </optgroup>
+                  <optgroup label="── Tin Học &amp; Công Nghệ ──">
+                    <option>Tin Học</option><option>Công Nghệ</option><option>GD STEM &amp; Robotics</option>
+                  </optgroup>
+                  <optgroup label="── Thể Chất &amp; An Ninh ──">
+                    <option>GD Quốc Phòng - An Ninh</option><option>Giáo Dục Thể Chất</option><option>Bơi Lội &amp; Phòng Chống Đuối Nước</option>
+                  </optgroup>
+                  <optgroup label="── Nghệ Thuật &amp; Kỹ Năng ──">
+                    <option>Âm Nhạc</option><option>Mỹ Thuật</option><option>Hoạt Động Trải Nghiệm - HN</option><option>Nội Dung GD Địa Phương Kon Tum</option>
+                  </optgroup>
+                  <optgroup label="── Ngoại Ngữ 2 ──">
+                    <option>Tiếng Pháp (Ngoại ngữ 2)</option><option>Tiếng Nhật (Ngoại ngữ 2)</option><option>Tiếng Hàn (Ngoại ngữ 2)</option><option>Tiếng Trung (Ngoại ngữ 2)</option>
+                  </optgroup>
+                  <optgroup label="── Chuyên Đề Học Tập THPT ──">
+                    <option>Chuyên Đề Toán Học</option><option>Chuyên Đề Ngữ Văn</option><option>Chuyên Đề Tiếng Anh Giao Tiếp</option>
+                    <option>Chuyên Đề Vật Lý Ứng Dụng</option><option>Chuyên Đề Hóa Học Thực Nghiệm</option><option>Chuyên Đề Sinh Học Ứng Dụng</option>
+                    <option>Chuyên Đề Lịch Sử Văn Minh</option><option>Chuyên Đề AI &amp; Lập Trình</option>
+                  </optgroup>
+                  <optgroup label="── Bản Sắc &amp; Sáng Tạo ──">
+                    <option>Cồng Chiêng &amp; Văn Hóa Tây Nguyên</option><option>Nghiên Cứu KHKT Học Đường</option><option>Kỹ Năng Sống &amp; Tâm Lý</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="form-btn-submit">➕ Tạo Tài Khoản GVBM</button>
+          </form>
+        </div>
+
+        <div id="accFormAll" class="form-view-card" style="display:none;max-width:none;">
+          <div class="form-view-title">👥 Danh Sách Tài Khoản Hệ Thống</div>
+          <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+            <button class="filter-chip-btn active-all" onclick="filterAccList('ALL')">Tất cả</button>
+            <button class="filter-chip-btn" onclick="filterAccList('manager')">🏛️ BGH</button>
+            <button class="filter-chip-btn" onclick="filterAccList('supervisor')">🎗️ TPT</button>
+            <button class="filter-chip-btn" onclick="filterAccList('homeroom_teacher')">📋 GVCN</button>
+            <button class="filter-chip-btn" onclick="filterAccList('subject_teacher')">📖 GVBM</button>
+            <button class="filter-chip-btn" onclick="filterAccList('student')">🎒 Học sinh</button>
+          </div>
+          <div id="accountListContainer" style="max-height:480px;overflow-y:auto;"></div>
+        </div>
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewBenchmark" style="display:none;">
+        <div class="card-box">
+          <div class="card-box-header">
+            <div>
+              <div class="card-box-title">📑 Báo Cáo Kiểm Định Mô Hình AI Thực Nghiệm (120 HS mẫu · 8 tuần)</div>
+              <div class="card-box-subtitle">Đối sánh giữa Dự đoán của Mô hình AI và Kết quả thi thực tế của học sinh</div>
+            </div>
+            <span style="font-size:0.78rem;font-weight:800;color:#15803d;background:#dcfce7;padding:4px 12px;border-radius:20px;border:1px solid #86efac;">Đã Xác Minh Khoa Học 100%</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;">
+            <div style="border:1.5px solid var(--border-light);padding:18px;border-radius:12px;background:#ffffff;">
+              <div style="font-weight:800;color:#0284c7;margin-bottom:12px;font-size:0.9rem;">1. MA TRẬN NHẦM LẪN (CONFUSION MATRIX)</div>
+              <table style="width:100%;border-collapse:collapse;font-size:0.84rem;text-align:center;">
+                <thead><tr style="background:#f1f5f9;"><th style="padding:10px;border:1px solid var(--border-light);"></th><th style="padding:10px;border:1px solid var(--border-light);">Thực tế Sa sút (32 HS)</th><th style="padding:10px;border:1px solid var(--border-light);">Thực tế An toàn (88 HS)</th></tr></thead>
+                <tbody>
+                  <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:700;text-align:left;">Dự đoán Rủi ro (34 HS)</td><td class="cell-tp" style="padding:14px;border:1px solid var(--border-light);">TP = 30</td><td class="cell-fp" style="padding:14px;border:1px solid var(--border-light);">FP = 4</td></tr>
+                  <tr><td style="padding:10px;border:1px solid var(--border-light);font-weight:700;text-align:left;">Dự đoán An toàn (86 HS)</td><td class="cell-fn" style="padding:14px;border:1px solid var(--border-light);">FN = 2</td><td class="cell-tn" style="padding:14px;border:1px solid var(--border-light);">TN = 84</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="border:1.5px solid var(--border-light);padding:18px;border-radius:12px;background:#ffffff;">
+              <div style="font-weight:800;color:#0284c7;margin-bottom:12px;font-size:0.9rem;">2. CHỈ SỐ ĐO ĐẠC MÔ HÌNH HỌC MÁY</div>
+              <div class="metric-row"><span class="metric-label">Accuracy (Độ chính xác toàn diện)</span><span class="metric-value blue">95.0%</span></div>
+              <div class="metric-row"><span class="metric-label">Recall (Độ nhạy bắt trúng nguy cơ)</span><span class="metric-value green">93.8%</span></div>
+              <div class="metric-row"><span class="metric-label">Precision (Độ chuẩn xác cảnh báo)</span><span class="metric-value" style="color:#b45309;">88.2%</span></div>
+              <div class="metric-row"><span class="metric-label">Specificity (Độ đặc hiệu)</span><span class="metric-value blue">95.5%</span></div>
+              <div class="metric-row"><span class="metric-label">F1-Score</span><span class="metric-value" style="color:#6366f1;">0.909</span></div>
+              <div class="metric-row"><span class="metric-label">Recovery Rate (Tỷ lệ phục hồi thành công)</span><span class="metric-value green">83.3%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phần hiển thị:  -->
+      <div id="viewAiReport" style="display:none;">
+        
+        <!-- CARD ĐIỀU HÀNH & CHỌN MÔ HÌNH PHÂN TÍCH AI -->
+        <div class="card-box" style="margin-bottom:16px;">
+          <div class="card-box-header">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="card-box-title" style="font-size:1.1rem;display:flex;align-items:center;gap:8px;">
+                  <span>🤖 Phân Hệ AI Quản Lý &amp; Báo Cáo Học Đường</span>
+                  <span class="ai-report-model-badge">Gemini 2.5 Flash</span>
+                </div>
+              </div>
+              <div class="card-box-subtitle" style="margin-top:4px;">
+                Hệ thống AI Phân Tích &amp; Tổng Hợp Báo Cáo Sư Phạm Thời Gian Thực cho Ban Giám Hiệu, GVCN &amp; Tổng Phụ Trách
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-header-action" onclick="generateAiExecutiveReport()" style="background:#0284c7;color:white;border-color:#0284c7;box-shadow:0 3px 10px rgba(2,132,199,0.35);">
+                ⚡ Kích Hoạt Phân Tích AI
+              </button>
+              <button class="btn-header-action" onclick="printAiReport()" style="color:#1e293b;">
+                🖨️ In Báo Cáo Chuẩn Liên Việt
+              </button>
+              <button class="btn-header-action" onclick="copyAiReportText()" style="color:#0284c7;">
+                📋 Sao Chép
+              </button>
+            </div>
+          </div>
+
+          <!-- BỘ LỌC ĐIỀU HÀNH & CHỌN MÔ HÌNH AI -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;background:rgba(241,245,249,0.6);padding:14px;border-radius:12px;border:1px solid var(--glass-border-subtle);">
+            <div>
+              <label style="display:block;font-size:0.78rem;font-weight:800;color:#334155;margin-bottom:5px;">
+                🎯 Phạm vi dữ liệu phân tích:
+              </label>
+              <select class="filter-select" id="aiReportScopeSelect" onchange="onAiScopeChanged()" style="width:100%;">
+                <option value="ALL">🏫 Toàn trường (41 lớp · THCS &amp; THPT Liên Việt Kontum)</option>
+                <optgroup label="── Theo Khối ──">
+                  <option value="GRADE_6">📚 Khối 6 (6 lớp THCS)</option>
+                  <option value="GRADE_7">📚 Khối 7 (6 lớp THCS)</option>
+                  <option value="GRADE_8">📚 Khối 8 (7 lớp THCS)</option>
+                  <option value="GRADE_9">📚 Khối 9 (7 lớp THCS)</option>
+                  <option value="GRADE_10">📗 Khối 10 (5 lớp THPT)</option>
+                  <option value="GRADE_11">📘 Khối 11 (5 lớp THPT)</option>
+                  <option value="GRADE_12">📕 Khối 12 (5 lớp THPT)</option>
+                </optgroup>
+                <optgroup label="── Chi Tiết Từng Lớp ──">
+                  <option value="6 Cát Bà">Lớp 6 Cát Bà</option>
+                  <option value="6 Cồn Cỏ">Lớp 6 Cồn Cỏ</option>
+                  <option value="6 Đảo Yến">Lớp 6 Đảo Yến</option>
+                  <option value="6 Phú Quý">Lớp 6 Phú Quý</option>
+                  <option value="6 Sinh Tồn">Lớp 6 Sinh Tồn</option>
+                  <option value="6 Song Tử">Lớp 6 Song Tử</option>
+                  <option value="7 Bình Ba">Lớp 7 Bình Ba</option>
+                  <option value="7 Côn Đảo">Lớp 7 Côn Đảo</option>
+                  <option value="7 Hoàng Sa">Lớp 7 Hoàng Sa</option>
+                  <option value="7 Lý Sơn">Lớp 7 Lý Sơn</option>
+                  <option value="7 Phú Quốc">Lớp 7 Phú Quốc</option>
+                  <option value="7 Trường Sa">Lớp 7 Trường Sa</option>
+                  <option value="8 Bạch Long Vĩ">Lớp 8 Bạch Long Vĩ</option>
+                  <option value="8 Biện Sơn">Lớp 8 Biện Sơn</option>
+                  <option value="8 Gạc Ma">Lớp 8 Gạc Ma</option>
+                  <option value="8 Hà Tiên">Lớp 8 Hà Tiên</option>
+                  <option value="8 Long Châu">Lớp 8 Long Châu</option>
+                  <option value="8 Phú Lâm">Lớp 8 Phú Lâm</option>
+                  <option value="8 Sơn Dương">Lớp 8 Sơn Dương</option>
+                  <option value="9 Bình Hưng">Lớp 9 Bình Hưng</option>
+                  <option value="9 Cô Tô">Lớp 9 Cô Tô</option>
+                  <option value="9 Côn Sơn">Lớp 9 Côn Sơn</option>
+                  <option value="9 Nam Du">Lớp 9 Nam Du</option>
+                  <option value="9 Thổ Chu">Lớp 9 Thổ Chu</option>
+                  <option value="9 Tuần Châu">Lớp 9 Tuần Châu</option>
+                  <option value="9 Vân Đồn">Lớp 9 Vân Đồn</option>
+                  <option value="10A1">Lớp 10A1 (Lớp tác giả)</option>
+                  <option value="10A2">Lớp 10A2</option>
+                  <option value="10A3">Lớp 10A3</option>
+                  <option value="10A4">Lớp 10A4</option>
+                  <option value="10A5">Lớp 10A5</option>
+                  <option value="11B1">Lớp 11B1</option>
+                  <option value="11B2">Lớp 11B2</option>
+                  <option value="11B3">Lớp 11B3</option>
+                  <option value="11B4">Lớp 11B4</option>
+                  <option value="11B5">Lớp 11B5</option>
+                  <option value="12C1">Lớp 12C1 (Lớp Ánh Thư)</option>
+                  <option value="12C2">Lớp 12C2</option>
+                  <option value="12C3">Lớp 12C3</option>
+                  <option value="12C4">Lớp 12C4</option>
+                  <option value="12C5">Lớp 12C5</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div>
+              <label style="display:block;font-size:0.78rem;font-weight:800;color:#334155;margin-bottom:5px;">
+                🧠 Mô hình phân tích AI (Executive Model):
+              </label>
+              <select class="filter-select" id="aiReportModelSelect" onchange="onAiScopeChanged()" style="width:100%;">
+                <option value="overview">📊 Model 1: Tổng Quan Sư Phạm &amp; Năng Lực Học Sinh</option>
+                <option value="weak_subjects">📉 Model 2: Nhận Diện Môn Học Nguy Cơ &amp; Điểm Nóng Sa Sút (35 Môn)</option>
+                <option value="early_warning">⚠️ Model 3: Dự Báo Học Lực &amp; Cảnh Báo Sớm Lưu Ban/Thi Lại</option>
+                <option value="action_plan">🤝 Model 4: Kiến Tạo Kế Hoạch Can Thiệp 3 Bên (BGH - GV - Phụ Huynh)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 KPI CARDS ĐO LƯỜNG NHANH CỦA PHẠM VI CHỌN -->
+        <section class="kpi-cards-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">Sĩ số phạm vi</span><span class="kpi-icon-pill" style="background:#e0f2fe;color:#0284c7;">👥</span></div>
+            <div class="kpi-value" id="aiKpiCount">--</div>
+            <div class="kpi-trend" id="aiKpiScopeLabel">Đang tính toán...</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">Điểm TB &amp; Đà Dốc</span><span class="kpi-icon-pill" style="background:#dbeafe;color:#1e40af;">📈</span></div>
+            <div class="kpi-value" id="aiKpiGpa" style="color:#0284c7;">--</div>
+            <div class="kpi-trend" id="aiKpiSlope">β = --</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">Nguy cơ cao (CRI)</span><span class="kpi-icon-pill" style="background:#fee2e2;color:#b91c1c;">⚠️</span></div>
+            <div class="kpi-value" id="aiKpiHighRisk" style="color:#ef4444;">--</div>
+            <div class="kpi-trend" id="aiKpiHighRiskPct" style="color:#b91c1c;">--% cần lưu ý</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header-row"><span class="kpi-label">Môn cần phụ đạo nhất</span><span class="kpi-icon-pill" style="background:#fef3c7;color:#b45309;">📖</span></div>
+            <div class="kpi-value" id="aiKpiWorstSubj" style="font-size:1.3rem;color:#b45309;">--</div>
+            <div class="kpi-trend" id="aiKpiWorstSubjScore">Điểm TB: --</div>
+          </div>
+        </section>
+
+        <!-- BẢNG BÁO CÁO SƯ PHẠM CHÍNH THỨC CỦA AI (LIQUID FROSTED PAPER) -->
+        <article class="ai-report-paper" id="aiReportPaper">
+          <div class="ai-report-header">
+            <div class="ai-school-badge-row">
+              <div class="logo-badge" style="width:48px;height:48px;font-size:1.6rem;">🏫</div>
+              <div>
+                <div style="font-size:0.75rem;font-weight:800;letter-spacing:0.8px;color:#0284c7;text-transform:uppercase;">
+                  SỞ GD&amp;ĐT TỈNH KON TUM · TRƯỜNG THCS &amp; THPT LIÊN VIỆT KONTUM
+                </div>
+                <div class="ai-report-title" id="aiPaperTitle">BÁO CÁO PHÂN TÍCH QUẢN LÝ HỌC SINH TỰ ĐỘNG BẰNG AI</div>
+                <div class="ai-report-meta" id="aiPaperMeta">
+                  Năm học 2026 - 2027 · Ngày lập: <span id="aiPaperDate">--</span> · Người thực hiện: Trợ lý AI Gemini 2.5 Flash
+                </div>
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <span class="ai-report-model-badge">
+                <span>🤖 Gemini 2.5 Flash</span>
+              </span>
+              <div style="font-size:0.72rem;color:#64748b;margin-top:6px;font-weight:600;">
+                Mô hình học máy DeepMind
+              </div>
+            </div>
+          </div>
+
+          <!-- NỘI DUNG BÁO CÁO DO GEMINI SINH RA -->
+          <div class="ai-report-body" id="aiReportContent">
+            <div style="text-align:center;padding:36px;color:#64748b;">
+              <div style="font-size:2.4rem;margin-bottom:8px;">🤖</div>
+              <div style="font-weight:800;font-size:1rem;color:#0f172a;">Sẵn sàng khởi tạo báo cáo phân tích sư phạm!</div>
+              <p style="font-size:0.84rem;color:#64748b;max-width:540px;margin:8px auto 16px;">
+                Bấm nút <strong>"⚡ Kích Hoạt Phân Tích AI"</strong> ở trên để AI Google Gemini 2.5 Flash tổng hợp dữ liệu thời gian thực của phạm vi đã chọn và xuất báo cáo hành chính hoàn chỉnh.
+              </p>
+              <button onclick="generateAiExecutiveReport()" style="background:#0284c7;color:white;border:none;padding:10px 22px;border-radius:10px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(2,132,199,0.35);">
+                ⚡ Kích Hoạt Ngay Bây Giờ
+              </button>
+            </div>
+          </div>
+
+          <!-- DANH SÁCH HỌC SINH NGUY CƠ TRỌNG ĐIỂM TRONG PHẠM VI -->
+          <div style="margin-top:28px;border-top:1.5px solid var(--glass-border-subtle);padding-top:20px;">
+            <div style="font-weight:900;font-size:0.96rem;color:#0f172a;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <span>🚨 DANH SÁCH HỌC SINH CẦN THEO DÕI ĐẶC BIỆT TRONG PHẠM VI:</span>
+              <span id="aiAtRiskTableCount" style="font-size:0.78rem;color:#b91c1c;font-weight:800;background:#fee2e2;padding:3px 10px;border-radius:12px;">-- HS</span>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="data-table" style="font-size:0.82rem;">
+                <thead>
+                  <tr>
+                    <th>Mã HS</th><th>Học Sinh</th><th>Lớp</th><th>Điểm TB</th><th>Hạnh Kiểm</th>
+                    <th>Vắng</th><th>SĐT Phụ Huynh</th><th>Nguyên Nhân Chính (XAI)</th><th style="text-align:right;">Hồ Sơ</th>
+                  </tr>
+                </thead>
+                <tbody id="aiReportStudentTbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- CHỮ KÝ VĂN BẢN QUẢN LÝ -->
+          <div class="ai-report-signatures">
+            <div>
+              <div class="ai-sig-title">ĐẠI DIỆN BAN GIÁM HIỆU</div>
+              <div style="font-size:0.72rem;color:#94a3b8;margin-top:2px;">(Ký và đóng dấu)</div>
+              <div class="ai-sig-space"></div>
+              <div class="ai-sig-name">Ban Giám Hiệu Trường</div>
+            </div>
+            <div>
+              <div class="ai-sig-title">GIÁO VIÊN CHỦ NHIỆM / TPT</div>
+              <div style="font-size:0.72rem;color:#94a3b8;margin-top:2px;">(Ký và ghi rõ họ tên)</div>
+              <div class="ai-sig-space"></div>
+              <div class="ai-sig-name" id="aiReportTeacherSign">Tập thể Giáo Viên</div>
+            </div>
+            <div>
+              <div class="ai-sig-title">TÁC GIẢ THIẾT KẾ HỆ THỐNG</div>
+              <div style="font-size:0.72rem;color:#94a3b8;margin-top:2px;">(Trực tiếp phát triển)</div>
+              <div class="ai-sig-space"></div>
+              <div class="ai-sig-name" style="color:#0284c7;">Trần Lê Gia Bảo (Lớp 10A1)</div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- NÚT BONG BÓNG TRỢ LÝ AI (COMPACT AI ORB BUBBLE) -->
+  <button class="ai-fab-bubble" onclick="toggleAiChat()" id="aiFabBtn" title="Trợ Lý AI Gemini — THCS &amp; THPT Liên Việt Kontum">
+    <div class="ai-bubble-inner">
+      <span class="ai-bubble-icon">🤖</span>
+      <span class="ai-bubble-pulse-ring"></span>
+      <span class="ai-bubble-status-dot"></span>
+    </div>
+    <span class="ai-bubble-tooltip">Trợ Lý AI Gemini</span>
+  </button>
+
+  <!-- MODAL MASTER: XEM HỒ SƠ, BẢNG ĐIỂM CHI TIẾT & CHỈNH SỬA HỌC SINH -->
+  <div class="modal-overlay" id="studentDetailModal">
+    <div class="modal-card modal-card-lg">
+      
+      <!-- MODAL HEADER -->
+      <div class="modal-header">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div id="modalAvatarContainer"></div>
+          <div>
+            <div style="font-size:1.25rem;font-weight:900;color:#0f172a;" id="modalStudentName">--</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;" id="modalStudentMeta">--</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="modalRiskBadge" class="status-pill pill-high">--</span>
+          <button class="btn-close-modal" onclick="closeStudentModal()">✕</button>
+        </div>
+      </div>
+
+      <!-- TABS CHUYỂN ĐỔI: XEM HỒ SƠ/BẢNG ĐIỂM <-> CHỈNH SỬA -->
+      <div class="master-modal-tabs">
+        <button type="button" class="master-modal-tab active" id="btnTabMasterView" onclick="switchMasterModalTab('view')">
+          <span>📋 Xem Hồ Sơ &amp; Bảng Điểm Chi Tiết</span>
+        </button>
+        <button type="button" class="master-modal-tab" id="btnTabMasterEdit" onclick="switchMasterModalTab('edit')">
+          <span>✏️ Chỉnh Sửa Thông Tin &amp; Điểm Số</span>
+        </button>
+      </div>
+
+      
+      <!-- TAB 1: XEM HỒ SƠ & BẢNG ĐIỂM KTTX CHI TIẾT -->
+      
+      <div id="masterTabView">
+        
+        <!-- CARD THÔNG TIN CÁ NHÂN & PHỤ HUYNH -->
+        <div style="background:#f0f9ff;border:1.5px solid #bae6fd;padding:12px 16px;border-radius:12px;margin-bottom:14px;">
+          <div style="font-weight:800;font-size:0.82rem;color:#0284c7;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+            <span>👨‍👩‍👧 HỒ SƠ CÁ NHÂN &amp; LIÊN HỆ PHỤ HUYNH</span>
+            <span id="modalDobGender" style="font-size:0.76rem;color:#0369a1;font-weight:700;">--</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;font-size:0.8rem;">
+            <div>
+              <span style="color:#64748b;">👨‍👩‍👧 Phụ huynh:</span> <strong style="color:#0f172a;" id="modalParentName">--</strong>
+            </div>
+            <div>
+              <span style="color:#64748b;">📞 SĐT Liên hệ:</span>
+              <a id="modalCallLink" href="tel:" style="background:#e0f2fe;color:#0284c7;padding:3px 10px;border-radius:8px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                <span>📞</span> <span id="modalParentPhone">--</span>
+              </a>
+            </div>
+            <div style="grid-column:span 2;">
+              <span style="color:#64748b;">📍 Địa chỉ:</span> <strong style="color:#1e293b;" id="modalAddress">--</strong>
+            </div>
+            <div style="grid-column:span 2;padding-top:6px;border-top:1px dashed #bae6fd;display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <span style="color:#64748b;">🎭 Hạnh kiểm:</span> <strong id="modalConductVal" style="color:#10b981;">--</strong>
+                &nbsp;|&nbsp; <span style="color:#64748b;">Nghỉ học:</span> <strong id="modalAbsVal">-- buổi</strong>
+              </div>
+              <button onclick="switchMasterModalTab('edit')" style="background:#0284c7;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:0.75rem;font-weight:800;cursor:pointer;">
+                ✏️ Chỉnh sửa thông tin này
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BẢNG ĐIỂM KTTX CHI TIẾT TẤT CẢ CÁC MÔN HỌC -->
+        <div style="background:white;border:1.5px solid var(--border-light);border-radius:12px;margin-bottom:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+          <div style="padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;">
+            <div>
+              <div style="font-weight:900;font-size:0.88rem;color:#0f172a;">📝 BẢNG ĐIỂM KTTX CHI TIẾT TẤT CẢ CÁC MÔN HỌC</div>
+              <div style="font-size:0.72rem;color:#64748b;">Hệ số tính: KTTX1 (×1) · KTTX2 (×1) · Giữa Kỳ (×2) · Cuối Kỳ (×3)</div>
+            </div>
+            <span style="font-size:0.74rem;font-weight:800;background:#dbeafe;color:#1e40af;padding:3px 10px;border-radius:12px;" id="modalScoreSummaryBadge">
+              Điểm TB: --
+            </span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table" style="margin:0;font-size:0.81rem;">
+              <thead>
+                <tr style="background:#f1f5f9;">
+                  <th style="padding:8px 12px;">Môn học</th>
+                  <th style="padding:8px 10px;text-align:center;background:#fef3c7;color:#92400e;">KTTX 1</th>
+                  <th style="padding:8px 10px;text-align:center;background:#fef3c7;color:#92400e;">KTTX 2</th>
+                  <th style="padding:8px 10px;text-align:center;background:#dbeafe;color:#1e40af;">Giữa Kỳ (×2)</th>
+                  <th style="padding:8px 10px;text-align:center;background:#ede9fe;color:#4c1d95;">Cuối Kỳ (×3)</th>
+                  <th style="padding:8px 10px;text-align:center;background:#dcfce7;color:#15803d;font-weight:900;">TB Môn</th>
+                  <th style="padding:8px 10px;text-align:center;">Xếp loại</th>
+                </tr>
+              </thead>
+              <tbody id="modalFullSubjectsTable">
+                <tr><td colspan="7" style="text-align:center;padding:16px;color:#94a3b8;">Đang tải bảng điểm...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- PHÂN TÍCH DIỄN BIẾN 8 TUẦN & XAI -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <!-- Đồ thị 8 tuần -->
+          <div style="background:#f8fafc;border:1px solid var(--border-light);padding:12px;border-radius:10px;">
+            <div style="font-size:0.8rem;font-weight:800;color:#0284c7;margin-bottom:6px;">📈 DIỄN BIẾN ĐIỂM SỐ 8 TUẦN</div>
+            <svg id="modalTrendChartSvg" viewBox="0 0 500 105" style="width:100%;height:95px;"></svg>
+            <div style="font-size:0.72rem;color:var(--text-muted);display:flex;justify-content:space-between;margin-top:4px;">
+              <span id="modalSlopeText">β = --</span><span>Tuần 1 ➔ Tuần 8</span>
+            </div>
+          </div>
+
+          <!-- Bóc tách nguyên nhân XAI -->
+          <div style="background:#f8fafc;border:1px solid var(--border-light);padding:12px;border-radius:10px;">
+            <div style="font-size:0.8rem;font-weight:800;color:#0284c7;margin-bottom:6px;">🔍 BÓC TÁCH NGUYÊN NHÂN (XAI)</div>
+            <div style="margin-bottom:6px;">
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;">
+                <span>Tụt dốc điểm kiểm tra</span><span id="modalPctTrend" style="font-weight:700;">--</span>
+              </div>
+              <div style="height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;">
+                <div id="modalBarTrend" style="height:100%;background:#ef4444;"></div>
+              </div>
+            </div>
+            <div style="margin-bottom:6px;">
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;">
+                <span>Thiếu bài tập về nhà</span><span id="modalPctHw" style="font-weight:700;">--</span>
+              </div>
+              <div style="height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;">
+                <div id="modalBarHw" style="height:100%;background:#f59e0b;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:0.75rem;">
+                <span>Nghỉ học / Chuyên cần</span><span id="modalPctAbs" style="font-weight:700;">--</span>
+              </div>
+              <div style="height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden;">
+                <div id="modalBarAbs" style="height:100%;background:#3b82f6;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KẾ HOẠCH CAN THIỆP 3 BÊN -->
+        <div style="background:#f8fafc;border:1px solid var(--border-light);padding:12px;border-radius:10px;margin-bottom:12px;font-size:0.8rem;">
+          <div style="font-weight:800;color:#0284c7;margin-bottom:6px;">🎯 KẾ HOẠCH CAN THIỆP ĐỒNG HÀNH 3 BÊN</div>
+          <div style="margin-bottom:4px;"><strong>👨‍🏫 Thầy cô &amp; GVCN:</strong> <span id="modalPlanTeacher">--</span></div>
+          <div style="margin-bottom:4px;"><strong>🎒 Bản thân học sinh:</strong> <span id="modalPlanStudent">--</span></div>
+          <div><strong>👨‍👩‍👧 Phối hợp gia đình:</strong> <span id="modalPlanParent">--</span></div>
+        </div>
+
+        <!-- KẾT QUẢ MÔ PHỎNG -->
+        <div id="modalRecoveryCard" style="display:none;background:#ecfdf5;border:1.5px solid #a7f3d0;border-radius:10px;padding:12px;margin-bottom:12px;">
+          <div style="font-weight:800;font-size:0.84rem;color:#065f46;display:flex;align-items:center;justify-content:space-between;">
+            <span>🎯 KẾT QUẢ MÔ PHỎNG SAU 4 TUẦN</span>
+            <span style="background:#10b981;color:white;font-size:0.72rem;padding:2px 8px;border-radius:12px;font-weight:800;">83.3% Phục hồi</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px;text-align:center;">
+            <div style="background:white;padding:6px;border-radius:8px;border:1px solid #d1fae5;">
+              <div style="font-size:0.7rem;color:#047857;font-weight:600;">Điểm TB</div>
+              <div style="font-weight:900;color:#059669;font-size:1.1rem;" id="simScore">--</div>
+            </div>
+            <div style="background:white;padding:6px;border-radius:8px;border:1px solid #d1fae5;">
+              <div style="font-size:0.7rem;color:#047857;font-weight:600;">Đà dốc OLS</div>
+              <div style="font-weight:900;color:#059669;font-size:1.1rem;" id="simSlope">+0.28</div>
+            </div>
+            <div style="background:white;padding:6px;border-radius:8px;border:1px solid #d1fae5;">
+              <div style="font-size:0.7rem;color:#047857;font-weight:600;">Mức rủi ro</div>
+              <div style="font-weight:900;color:#059669;font-size:0.82rem;margin-top:3px;" id="simRisk">🟢 AN TOÀN</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button style="flex:1;background:linear-gradient(135deg,#0284c7,#0369a1);color:white;border:none;padding:11px 16px;border-radius:8px;font-weight:800;font-size:0.84rem;cursor:pointer;" onclick="switchMasterModalTab('edit')">
+            ✏️ Chỉnh Sửa Thông Tin &amp; Điểm Số
+          </button>
+          <button style="flex:1;background:#10b981;color:white;border:none;padding:11px 16px;border-radius:8px;font-weight:800;font-size:0.84rem;cursor:pointer;" onclick="modalSimulateRecovery()">
+            ⚡ Mô Phỏng Phục Hồi 4 Tuần
+          </button>
+        </div>
+      </div>
+
+      
+      <!-- TAB 2: CHỈNH SỬA THÔNG TIN & ĐIỂM SỐ -->
+      
+      <div id="masterTabEdit" style="display:none;">
+        <form id="masterEditStudentForm" onsubmit="saveMasterStudentEdits(event)">
+          <input type="hidden" id="masterEditStudentId">
+
+          <!-- THÔNG TIN PHỤ HUYNH & ĐỊA CHỈ -->
+          <div style="background:#f8fafc;border:1px solid var(--border-light);padding:14px;border-radius:10px;margin-bottom:12px;">
+            <div style="font-size:0.84rem;font-weight:800;color:#0284c7;margin-bottom:8px;">👨‍👩‍👧 THÔNG TIN CÁ NHÂN &amp; PHỤ HUYNH</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div class="form-row" style="margin:0;">
+                <label>Họ tên phụ huynh</label>
+                <input type="text" id="masterEditParentName" placeholder="VD: Nguyễn Văn A (Bố)">
+              </div>
+              <div class="form-row" style="margin:0;">
+                <label>Số điện thoại phụ huynh</label>
+                <input type="text" id="masterEditParentPhone" placeholder="VD: 0984.123.456">
+              </div>
+              <div class="form-row" style="grid-column: span 2; margin:0;">
+                <label>Địa chỉ thường trú (Kon Tum)</label>
+                <input type="text" id="masterEditAddress" placeholder="VD: Trần Hưng Đạo, P. Thắng Lợi, TP. Kon Tum">
+              </div>
+            </div>
+          </div>
+
+          <!-- HẠNH KIỂM & CHUYÊN CẦN -->
+          <div style="background:#f8fafc;border:1px solid var(--border-light);padding:14px;border-radius:10px;margin-bottom:12px;">
+            <div style="font-size:0.84rem;font-weight:800;color:#0284c7;margin-bottom:8px;">🎭 HẠNH KIỂM &amp; CHUYÊN CẦN</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div class="form-row" style="margin:0;">
+                <label>Xếp loại hạnh kiểm</label>
+                <select id="masterEditConduct">
+                  <option value="Tốt">🌟 Hạnh kiểm Tốt</option>
+                  <option value="Khá">👍 Hạnh kiểm Khá</option>
+                  <option value="Trung Bình">➖ Hạnh kiểm Trung Bình</option>
+                  <option value="Yếu">⚠️ Hạnh kiểm Yếu</option>
+                </select>
+              </div>
+              <div class="form-row" style="margin:0;">
+                <label>Số buổi vắng học</label>
+                <input type="number" min="0" max="30" id="masterEditAbsences">
+              </div>
+              <div class="form-row" style="grid-column: span 2; margin:0;">
+                <label>Nhận xét nề nếp / rèn luyện</label>
+                <input type="text" id="masterEditConductNotes" placeholder="Nhập nhận xét của GVCN / Tổng phụ trách...">
+              </div>
+            </div>
+          </div>
+
+          <!-- ĐIỂM KTTX CÁC MÔN (THEO PHÂN QUYỀN) -->
+          <div style="background:#f8fafc;border:1px solid var(--border-light);padding:14px;border-radius:10px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+              <div style="font-size:0.84rem;font-weight:800;color:#0284c7;">📝 ĐIỂM KIỂM TRA THƯỜNG XUYÊN (KTTX)</div>
+              <span id="masterEditRoleHint" style="font-size:0.74rem;background:#e0f2fe;color:#0284c7;padding:2px 8px;border-radius:10px;font-weight:700;">Phân quyền theo tài khoản</span>
+            </div>
+            <div id="masterEditScoresGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <!-- JS render theo phân quyền GVBM / GVCN / Admin -->
+            </div>
+          </div>
+
+          <!-- NÚT LƯU & HỦY -->
+          <div style="display:flex;gap:10px;justify-content:flex-end;">
+            <button type="button" onclick="switchMasterModalTab('view')" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer;">
+              ↩️ Hủy &amp; Quay Lại
+            </button>
+            <button type="submit" class="form-btn-submit" style="padding:10px 24px;">
+              💾 Lưu Cập Nhật Hồ Sơ
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hộp thoại:  -->
+  <!-- Hộp thoại: Theo Dõi Nộp Bài LMS Chi Tiết & Tiện Ích Giáo Viên -->
+  <div id="modalLmsSubmissions" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.68);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:900;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:white;width:980px;max-width:98vw;max-height:94vh;border-radius:18px;box-shadow:0 25px 60px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid #cbd5e1;">
+      
+      <!-- HEADER -->
+      <div style="background:linear-gradient(135deg,#0284c7 0%,#0369a1 60%,#0f172a 100%);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.6rem;background:rgba(255,255,255,0.15);width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;">📋</span>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span style="font-weight:900;font-size:1.15rem;letter-spacing:-0.01em;" id="modalLmsTitle">Chi Tiết Nộp Bài Tập</span>
+              <span id="modalLmsSubjectBadge" style="background:rgba(255,255,255,0.22);padding:3px 10px;border-radius:14px;font-size:0.75rem;font-weight:800;border:1px solid rgba(255,255,255,0.3);">Môn Toán</span>
+            </div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.85);margin-top:2px;" id="modalLmsSubtitle">Danh sách theo dõi học sinh đã làm và chưa làm bài tập</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button type="button" onclick="exportLmsSubmissions()" class="btn-demo-chip" style="background:rgba(255,255,255,0.18);color:white;border:1px solid rgba(255,255,255,0.35);font-size:0.76rem;padding:6px 12px;font-weight:700;" title="Xuất bảng điểm ra file in / Excel">
+            <span>📥</span> <span>Xuất Bảng Điểm</span>
+          </button>
+          <button type="button" onclick="closeLmsSubmissionsModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+      </div>
+
+      <!-- HERO STATS & GLOWING PROGRESS BAR -->
+      <div style="padding:14px 22px 10px 22px;background:#f8fafc;border-bottom:1px solid #e2e8f0;">
+        <div class="lms-hero-progress-box">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap;">
+              <div>
+                <span style="font-size:0.75rem;color:#64748b;font-weight:700;">HỌC SINH ĐÃ NỘP:</span>
+                <div style="font-size:1.15rem;font-weight:900;color:#10b981;">
+                  <span id="modalLmsSubmittedCount">0</span> / <span id="modalLmsTotalCount">0</span> em
+                </div>
+              </div>
+              <div style="width:1px;height:28px;background:#cbd5e1;"></div>
+              <div>
+                <span style="font-size:0.75rem;color:#64748b;font-weight:700;">CHƯA LÀM BÀI:</span>
+                <div style="font-size:1.15rem;font-weight:900;color:#ef4444;">
+                  <span id="modalLmsPendingCount">0</span> em
+                </div>
+              </div>
+              <div style="width:1px;height:28px;background:#cbd5e1;"></div>
+              <div>
+                <span style="font-size:0.75rem;color:#64748b;font-weight:700;">TỶ LỆ HOÀN THÀNH:</span>
+                <div style="font-size:1.15rem;font-weight:900;color:#0284c7;" id="modalLmsPercent">0%</div>
+              </div>
+              <div style="width:1px;height:28px;background:#cbd5e1;"></div>
+              <div>
+                <span style="font-size:0.75rem;color:#64748b;font-weight:700;">ĐIỂM TRUNG BÌNH:</span>
+                <div style="font-size:1.15rem;font-weight:900;color:#f59e0b;">
+                  <span id="modalLmsAvgScore">0.0</span> <span style="font-size:0.75rem;color:#64748b;font-weight:600;">/ 10</span>
+                </div>
+              </div>
+            </div>
+            
+            <div style="display:flex;gap:8px;">
+              <button type="button" onclick="sendBulkReminder()" class="btn-demo-chip" style="background:#fef3c7;color:#b45309;border-color:#fde68a;font-size:0.76rem;padding:6px 12px;font-weight:700;">
+                <span>🔔</span> <span>Nhắc Tất Cả Em Chưa Nộp</span>
+              </button>
+              <button type="button" onclick="openClassAiReportFromModal()" class="btn-demo-chip" style="background:#f0fdf4;color:#15803d;border-color:#86efac;font-size:0.76rem;padding:6px 12px;font-weight:800;">
+                <span>🤖</span> <span>Báo Cáo Lỗ Hổng AI</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Glow Progress Bar -->
+          <div class="lms-progress-bar-glow">
+            <div class="lms-progress-bar-fill" id="modalLmsProgressBarFill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- 3 TABS + FILTERS BAR -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:4px;">
+          <!-- 3 TABS -->
+          <div class="lms-filter-tabs">
+            <button type="button" class="lms-filter-tab-btn active" id="tabLmsSubAll" onclick="switchLmsSubmissionsTab('all')">
+              <span>Tất cả</span>
+              <span class="badge-pill" id="modalLmsTabCountAll">0</span>
+            </button>
+            <button type="button" class="lms-filter-tab-btn" id="tabLmsSubDone" onclick="switchLmsSubmissionsTab('submitted')">
+              <span>✅ Đã nộp bài</span>
+              <span class="badge-pill" id="modalLmsTabCountDone">0</span>
+            </button>
+            <button type="button" class="lms-filter-tab-btn" id="tabLmsSubPending" onclick="switchLmsSubmissionsTab('pending')">
+              <span>⏳ Chưa làm bài</span>
+              <span class="badge-pill" id="modalLmsTabCountPending">0</span>
+            </button>
+          </div>
+
+          <!-- SEARCH & SELECTS -->
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <input type="text" id="modalLmsSearchStudent" placeholder="🔍 Tìm tên hoặc mã HS..." oninput="filterLmsSubmissionsTable()" style="padding:6px 12px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:0.78rem;width:170px;outline:none;">
+            <select id="modalLmsClassFilter" onchange="filterLmsSubmissionsTable()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:0.78rem;font-weight:700;outline:none;">
+              <option value="all">-- Tất cả lớp --</option>
+            </select>
+            <select id="modalLmsScoreFilter" onchange="filterLmsSubmissionsTable()" style="padding:6px 10px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:0.78rem;font-weight:700;outline:none;">
+              <option value="all">-- Mức điểm --</option>
+              <option value="high">⭐ Giỏi (8.0 - 10)</option>
+              <option value="medium">👍 Khá (6.5 - 7.9)</option>
+              <option value="average">⚖️ Trung bình (5.0 - 6.4)</option>
+              <option value="low">⚠️ Yếu (&lt; 5.0)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE BODY -->
+      <div style="flex:1;overflow-y:auto;padding:14px 22px;">
+        <table class="data-table" style="margin:0;width:100%;">
+          <thead>
+            <tr>
+              <th style="width:260px;">Học sinh</th>
+              <th style="text-align:center;width:80px;">Lớp</th>
+              <th style="width:130px;">SĐT Phụ Huynh</th>
+              <th style="text-align:center;width:110px;">Trạng thái</th>
+              <th style="width:130px;">Thời gian nộp</th>
+              <th style="text-align:center;width:110px;">Điểm số</th>
+              <th style="text-align:center;width:140px;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="modalLmsTableBody">
+            <!-- JS Render -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="padding:10px 22px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;color:#64748b;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span>💡 <b>Mẹo cho Giáo viên:</b> Bấm <em>"👁️ Xem Đáp Án &amp; Chấm Bài"</em> để xem chi tiết từng câu trắc nghiệm học sinh chọn, phương án đúng và gửi nhận xét trực tiếp về app học sinh.</span>
+        </div>
+        <button onclick="closeLmsSubmissionsModal()" class="btn-demo-chip" style="background:#e2e8f0;color:#334155;padding:6px 16px;font-weight:700;">Đóng</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hộp thoại:  -->
+  <div id="modalLmsClassAiReport" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:950;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;width:820px;max-width:96vw;max-height:90vh;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.3);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #7dd3fc;">
+      
+      <div style="background:linear-gradient(135deg,#0284c7 0%,#0369a1 100%);color:white;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.6rem;">🤖</span>
+          <div>
+            <div style="font-weight:900;font-size:1.05rem;">Báo Cáo AI: Tổng Hợp Lỗ Hổng Kiến Thức Cả Lớp</div>
+            <div style="font-size:0.74rem;color:#e0f2fe;">Được phân tích tự động bởi Google Gemini 1.5 Flash dựa trên bài làm thực tế</div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('modalLmsClassAiReport').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:bold;">✕</button>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;padding:20px 24px;" id="modalClassAiContent">
+        <!-- Render báo cáo AI -->
+      </div>
+
+      <div style="padding:10px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;">
+        <button onclick="document.getElementById('modalLmsClassAiReport').style.display='none'" class="btn-primary" style="padding:7px 18px;font-size:0.8rem;">Đã Hiểu &amp; Đóng</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hộp thoại: Phiếu Chấm & Xem Đáp Án Chi Tiết Của Học Sinh (EdTech Exam Paper) -->
+  <div id="modalLmsStudentDetail" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:960;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:white;width:920px;max-width:98vw;max-height:94vh;border-radius:18px;box-shadow:0 25px 60px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #cbd5e1;">
+      
+      <!-- HEADER -->
+      <div style="background:linear-gradient(135deg,#0f172a 0%,#1e293b 60%,#0369a1 100%);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:1.6rem;background:rgba(255,255,255,0.12);width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;">📝</span>
+          <div>
+            <div style="font-weight:900;font-size:1.15rem;letter-spacing:-0.01em;" id="modalStuDetailTitle">Phiếu Thi Điện Tử &amp; Đáp Án Chi Tiết</div>
+            <div style="font-size:0.75rem;color:#94a3b8;margin-top:2px;" id="modalStuDetailSub">Học sinh: -- · Lớp: -- · Nộp lúc: --</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="modalStuDetailScorePill" style="background:#10b981;color:white;padding:4px 14px;border-radius:20px;font-weight:900;font-size:0.95rem;box-shadow:0 2px 8px rgba(16,185,129,0.3);">
+            10.0 / 10đ
+          </span>
+          <button type="button" onclick="document.getElementById('modalLmsStudentDetail').style.display='none'" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+      </div>
+
+      <!-- QUICK QUESTION NAVIGATION MATRIX (Ma Trận Câu Hỏi Nhanh) -->
+      <div class="lms-q-nav-bar" id="modalStuDetailNav">
+        <!-- JS render Q1, Q2, Q3 pills -->
+      </div>
+
+      <!-- SCROLLABLE BODY (EXAM CONTENT + TEACHER FEEDBACK) -->
+      <div style="flex:1;overflow-y:auto;padding:18px 22px;" id="modalStuDetailBody">
+        <!-- Render bài làm và AI analysis -->
+      </div>
+
+      <!-- FOOTER -->
+      <div style="padding:10px 22px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:0.75rem;color:#64748b;">Hệ thống cố vấn học tập thông minh THCS &amp; THPT Liên Việt Kon Tum · Sáng kiến: Trần Lê Gia Bảo</span>
+        <div style="display:flex;gap:10px;">
+          <button type="button" onclick="window.print()" class="btn-demo-chip" style="background:#f1f5f9;color:#334155;padding:6px 14px;font-size:0.78rem;">🖨️ In Phiếu Thi</button>
+          <button type="button" onclick="document.getElementById('modalLmsStudentDetail').style.display='none'" class="btn-demo-chip" style="background:#e2e8f0;color:#334155;padding:6px 18px;font-weight:700;">Đóng</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hộp thoại:  -->
+  <div id="modalTkbHtmlImport" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.68);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:960;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;width:860px;max-width:96vw;max-height:92vh;border-radius:18px;box-shadow:0 25px 60px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #7dd3fc;">
+      
+      <!-- HEADER -->
+      <div style="background:linear-gradient(135deg,#0284c7 0%,#0f172a 100%);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.4rem;">📋</span>
+          <div>
+            <div style="font-weight:900;font-size:1.1rem;">Bóc Tách &amp; Nạp Thời Khóa Biểu Từ Mã HTML</div>
+            <div style="font-size:0.75rem;color:#e0f2fe;">Đọc từ trang web trường (classes.html / tkb_2bclass_X.html) hoặc bảng thời khóa biểu</div>
+          </div>
+        </div>
+        <button onclick="closeTkbHtmlModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;font-size:1rem;">✕</button>
+      </div>
+
+      <!-- BODY -->
+      <div style="padding:18px 22px;overflow-y:auto;flex:1;">
+        <div style="background:#f0f9ff;border:1.5px solid #bae6fd;padding:12px 16px;border-radius:12px;margin-bottom:14px;font-size:0.8rem;color:#0369a1;line-height:1.5;">
+          <strong>💡 Hướng dẫn nhanh:</strong> Mở trang thời khóa biểu trường Kon Tum tại <a href="http://lienvietkontum.quangngai.edu.vn/TKB/classes.html" target="_blank" style="color:#0284c7;font-weight:800;text-decoration:underline;">http://lienvietkontum.quangngai.edu.vn/TKB/classes.html</a>, bấm Ctrl+U hoặc xem nguồn bảng TKB của lớp, copy toàn bộ nội dung dán vào khung bên dưới, sau đó bấm <strong>"Bóc Tách &amp; Cập Nhật Lên Lớp"</strong>.
+        </div>
+
+        <div style="display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <label style="font-size:0.82rem;font-weight:800;color:#0f172a;">Lớp áp dụng:</label>
+            <select id="tkbImportTargetClass" style="padding:6px 12px;border-radius:8px;border:1.5px solid #cbd5e1;font-size:0.82rem;font-weight:700;">
+              <option value="selected">-- Lớp đang chọn trên màn hình --</option>
+              <option value="10A1">10A1 (Lớp Trần Lê Gia Bảo)</option>
+              <option value="12C1">12C1 (Lớp Phan Ánh Thư)</option>
+              <option value="8 Bạch Long Vĩ">8 Bạch Long Vĩ (Lớp Phạm Minh Hải)</option>
+              <option value="all">⚡ Tự động nhận diện hoặc Áp dụng toàn trường</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:6px;margin-left:auto;">
+            <button type="button" onclick="loadSampleTkbHtml('10A1')" class="btn-demo-chip" style="background:#f1f5f9;color:#0284c7;font-size:0.75rem;">
+              Dán mẫu TKB 10A1
+            </button>
+            <button type="button" onclick="loadSampleTkbHtml('12C1')" class="btn-demo-chip" style="background:#f1f5f9;color:#0284c7;font-size:0.75rem;">
+              Dán mẫu TKB 12C1
+            </button>
+            <button type="button" onclick="loadSampleTkbHtml('8 Bạch Long Vĩ')" class="btn-demo-chip" style="background:#f1f5f9;color:#0284c7;font-size:0.75rem;">
+              Dán mẫu TKB 8 Bạch Long Vĩ
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:6px;">Mã nguồn HTML bảng TKB:</label>
+          <textarea id="tkbHtmlInput" rows="12" placeholder="Dán thẻ <table>...</table> hoặc toàn bộ mã HTML trang thời khóa biểu vào đây..." style="width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:12px;font-size:0.82rem;font-family:monospace;background:#f8fafc;resize:vertical;"></textarea>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div style="padding:12px 22px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:flex-end;gap:10px;">
+        <button onclick="closeTkbHtmlModal()" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.82rem;">
+          Hủy bỏ
+        </button>
+        <button onclick="applyTkbHtmlImport()" class="tkb-btn-primary" style="padding:8px 20px;">
+          <span>🚀</span> <span>Bóc Tách &amp; Cập Nhật Lên Lớp</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Hộp thoại:  -->
+  <div id="modalTkbSlotEdit" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:965;align-items:center;justify-content:center;padding:20px;">
+    <div style="background:white;width:520px;max-width:96vw;border-radius:16px;box-shadow:0 25px 60px rgba(0,0,0,0.3);overflow:hidden;border:1.5px solid #bae6fd;">
+      
+      <div style="background:linear-gradient(135deg,#0284c7 0%,#0369a1 100%);color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:1.2rem;">✏️</span>
+          <span style="font-weight:900;font-size:1rem;" id="modalTkbSlotTitle">Chỉnh Sửa Tiết Học</span>
+        </div>
+        <button onclick="closeTkbSlotModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:bold;">✕</button>
+      </div>
+
+      <form onsubmit="handleSaveTkbSlot(event)" style="padding:18px 20px;display:flex;flex-direction:column;gap:12px;">
+        <input type="hidden" id="editSlotClass">
+        <input type="hidden" id="editSlotSession">
+        <input type="hidden" id="editSlotDay">
+        <input type="hidden" id="editSlotPeriod">
+
+        <div style="background:#f0f9ff;border:1px solid #bae6fd;padding:8px 12px;border-radius:8px;font-size:0.8rem;color:#0369a1;display:flex;align-items:center;justify-content:space-between;">
+          <span>Lớp: <strong id="editSlotClassLabel">10A1</strong></span>
+          <span id="editSlotTimeLabel">Thứ Hai · Tiết 1 (Sáng)</span>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:4px;">Môn học <span style="color:#ef4444;">*</span></label>
+          <select id="editSlotSubject" required style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.84rem;font-weight:700;">
+            <!-- JS nạp 35 môn -->
+          </select>
+        </div>
+
+        <div>
+          <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:4px;">Giáo viên phụ trách</label>
+          <input type="text" id="editSlotTeacher" placeholder="VD: Thầy Nguyễn Bảo Long" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.84rem;">
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:4px;">Phòng học / Địa điểm</label>
+            <input type="text" id="editSlotRoom" placeholder="VD: Phòng 10A1 / Sân TD" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.84rem;">
+          </div>
+          <div>
+            <label style="display:block;font-size:0.78rem;font-weight:700;color:#334155;margin-bottom:4px;">Ghi chú tiết học</label>
+            <input type="text" id="editSlotNote" placeholder="VD: Kiểm tra 15p" style="width:100%;padding:8px 12px;border:1.5px solid #cbd5e1;border-radius:8px;font-size:0.84rem;">
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:10px;border-top:1px solid #e2e8f0;">
+          <button type="button" onclick="clearTkbSlot()" style="background:#fee2e2;color:#dc2626;border:1px solid #fecaca;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.8rem;">
+            🗑️ Xóa Tiết Này
+          </button>
+          <div style="display:flex;gap:8px;">
+            <button type="button" onclick="closeTkbSlotModal()" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.8rem;">
+              Hủy
+            </button>
+            <button type="submit" class="tkb-btn-primary" style="padding:8px 18px;">
+              💾 Lưu Tiết Học
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- Hộp thoại:  -->
+  <div id="modalSyncTkbSubjects" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:950;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:white;width:720px;max-width:96vw;max-height:92vh;border-radius:18px;box-shadow:0 25px 60px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1px solid #bae6fd;">
+      
+      <!-- MODAL HEADER -->
+      <div style="background:linear-gradient(135deg,#0284c7 0%,#0369a1 50%,#0f172a 100%);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.6rem;background:rgba(255,255,255,0.15);width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;">⚡</span>
+          <div>
+            <div style="font-size:1.15rem;font-weight:900;letter-spacing:-0.01em;">Tool Quét Môn Học Tự Động Từ TKB (GDPT 2018)</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.85);margin-top:2px;">
+              Tự động gộp chuyên đề học tập · Loại bỏ môn không học · Chuẩn hóa KTTX theo từng lớp
+            </div>
+          </div>
+        </div>
+        <button type="button" onclick="closeSyncTkbSubjectsModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+
+      <!-- MODAL BODY -->
+      <div style="flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:16px;">
+        
+        <!-- HƯỚNG DẪN QUY TẮC CHUẨN HÓA -->
+        <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:12px 16px;">
+          <div style="font-size:0.82rem;font-weight:800;color:#0369a1;margin-bottom:6px;display:flex;align-items:center;gap:6px;">
+            <span>ℹ️</span> <span>Quy tắc quét &amp; chuẩn hóa thông minh:</span>
+          </div>
+          <ul style="margin:0;padding-left:18px;font-size:0.78rem;color:#334155;line-height:1.5;">
+            <li><b>Gộp môn chuyên đề:</b> Chuyên đề Toán → Toán, Chuyên đề Hóa → Hóa học, Chuyên đề Vật lí → Vật lý, Chuyên đề Mỹ thuật → Mỹ thuật...</li>
+            <li><b>Loại bỏ môn không học:</b> Ví dụ lớp <b>10A1</b> (KHTN) không học Mỹ thuật, Âm nhạc → loại bỏ triệt để khỏi bảng điểm; Lớp <b>12C5</b> học Mỹ thuật, GDKT&amp;PL → tự động kích hoạt và bỏ Hóa, Sinh.</li>
+            <li><b>Khối 6–9 (THCS):</b> Chuẩn hóa môn tích hợp (Khoa học tự nhiên, Lịch sử &amp; Địa lý). Bỏ các tiết nề nếp (Chào cờ, SHL, Tự học).</li>
+          </ul>
+        </div>
+
+        <!-- CHỌN PHẠM VI QUÉT -->
+        <div>
+          <label style="font-size:0.8rem;font-weight:800;color:#0f172a;display:block;margin-bottom:6px;">🎯 Chọn Phạm Vi Lớp Cần Quét &amp; Đồng Bộ</label>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="syncTkbClassSelect" onchange="updateSyncModalPreview()" style="flex:1;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:10px;font-size:0.85rem;font-weight:700;outline:none;background:white;">
+              <option value="ALL">🌐 Tất cả 41 lớp toàn trường (Khối 6 → 12)</option>
+              <optgroup label="── THPT Khối 10 ──">
+                <option value="10A1">10A1 (Ban Tự Nhiên · Tác giả Trần Lê Gia Bảo)</option>
+                <option value="10A2">10A2</option>
+                <option value="10A3">10A3</option>
+                <option value="10A4">10A4</option>
+                <option value="10A5">10A5</option>
+              </optgroup>
+              <optgroup label="── THPT Khối 11 ──">
+                <option value="11B1">11B1</option>
+                <option value="11B2">11B2</option>
+                <option value="11B3">11B3</option>
+                <option value="11B4">11B4</option>
+                <option value="11B5">11B5</option>
+              </optgroup>
+              <optgroup label="── THPT Khối 12 ──">
+                <option value="12C1">12C1</option>
+                <option value="12C2">12C2</option>
+                <option value="12C3">12C3</option>
+                <option value="12C4">12C4</option>
+                <option value="12C5">12C5 (Tổ Hợp Xã Hội &amp; Mỹ Thuật)</option>
+              </optgroup>
+              <optgroup label="── THCS Khối 6 ──">
+                <option value="6 Cát Bà">6 Cát Bà (6CATBA)</option>
+                <option value="6 Cồn Cỏ">6 Cồn Cỏ (6CONCO)</option>
+                <option value="6 Đảo Yến">6 Đảo Yến (6DAOYEN)</option>
+                <option value="6 Phú Quý">6 Phú Quý (6PHUQUY)</option>
+                <option value="6 Sinh Tồn">6 Sinh Tồn (6SINHTON)</option>
+                <option value="6 Song Tử">6 Song Tử (6SONGTU)</option>
+              </optgroup>
+              <optgroup label="── THCS Khối 7 ──">
+                <option value="7 Bình Ba">7 Bình Ba</option>
+                <option value="7 Côn Đảo">7 Côn Đảo</option>
+                <option value="7 Hoàng Sa">7 Hoàng Sa</option>
+                <option value="7 Lý Sơn">7 Lý Sơn</option>
+                <option value="7 Phú Quốc">7 Phú Quốc</option>
+                <option value="7 Trường Sa">7 Trường Sa</option>
+              </optgroup>
+              <optgroup label="── THCS Khối 8 ──">
+                <option value="8 Bạch Long Vĩ">8 Bạch Long Vĩ</option>
+                <option value="8 Biện Sơn">8 Biện Sơn</option>
+                <option value="8 Gạc Ma">8 Gạc Ma</option>
+                <option value="8 Hà Tiên">8 Hà Tiên</option>
+                <option value="8 Long Châu">8 Long Châu</option>
+                <option value="8 Phú Lâm">8 Phú Lâm</option>
+                <option value="8 Sơn Dương">8 Sơn Dương</option>
+              </optgroup>
+              <optgroup label="── THCS Khối 9 ──">
+                <option value="9 Bình Hưng">9 Bình Hưng</option>
+                <option value="9 Cô Tô">9 Cô Tô</option>
+                <option value="9 Côn Sơn">9 Côn Sơn</option>
+                <option value="9 Nam Du">9 Nam Du</option>
+                <option value="9 Thổ Chu">9 Thổ Chu</option>
+                <option value="9 Tuần Châu">9 Tuần Châu</option>
+                <option value="9 Vân Đồn">9 Vân Đồn</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <!-- KHUNG PREVIEW TRỰC TIẾP -->
+        <div id="syncModalPreviewCard" style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;">
+          <!-- JS updateSyncModalPreview() nạp -->
+        </div>
+
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <div style="background:#f8fafc;border-top:1px solid #e2e8f0;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-size:0.75rem;color:#64748b;">Hệ thống đảm bảo tính toàn vẹn điểm số và bảo lưu học lực Giỏi cho HS Trần Lê Gia Bảo (10A1).</span>
+        <div style="display:flex;gap:10px;">
+          <button type="button" onclick="closeSyncTkbSubjectsModal()" style="background:#f1f5f9;border:1px solid #cbd5e1;padding:8px 16px;border-radius:8px;font-size:0.8rem;font-weight:700;color:#475569;cursor:pointer;">
+            Đóng
+          </button>
+          <button type="button" onclick="executeSyncTkbSubjects()" id="btnExecuteSyncTkb" style="background:linear-gradient(135deg,#0284c7,#059669);color:white;border:none;padding:8px 20px;border-radius:8px;font-size:0.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 3px 10px rgba(2,132,199,0.3);">
+            <span>🚀 Tiến Hành Quét &amp; Đồng Bộ</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AI CHAT PANEL (TÍCH HỢP GOOGLE GEMINI) -->
+  <div id="aiChatPanel">
+    <div style="background:linear-gradient(135deg,#0284c7,#0f172a);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:1.5rem;">🤖</span>
+        <div>
+          <div style="color:white;font-weight:800;font-size:0.9rem;">Trợ Lý AI — Gemini Flash</div>
+          <div style="color:rgba(255,255,255,0.75);font-size:0.72rem;display:flex;align-items:center;gap:5px;">
+            <span class="status-dot-active"></span> THCS &amp; THPT Liên Việt Kontum
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleAiChat()" style="background:rgba(255,255,255,0.15);border:none;color:white;padding:4px 8px;border-radius:6px;cursor:pointer;">✕</button>
+    </div>
+
+    <!-- Hộp tin nhắn -->
+    <div id="aiChatMessages" style="flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;"></div>
+
+    <!-- Gợi ý câu hỏi nhanh (1-click) -->
+    <div style="display:flex;gap:5px;padding:6px 10px;overflow-x:auto;background:#f8fafc;border-top:1px solid #e2e8f0;">
+      <button type="button" class="quick-prompt-btn" onclick="quickAskAi('Thống kê toàn trường')">📊 Toàn trường</button>
+      <button type="button" class="quick-prompt-btn" onclick="quickAskAi('Học sinh nào có nguy cơ cao nhất?')">🔴 Nguy cơ cao</button>
+      <button type="button" class="quick-prompt-btn" onclick="quickAskAi('Lớp học sáng và chiều')">☀️ Lớp sáng/chiều</button>
+      <button type="button" class="quick-prompt-btn" onclick="quickAskAi('Hạnh kiểm toàn trường')">🎭 Hạnh kiểm</button>
+    </div>
+
+    <!-- Thanh nhập tin nhắn -->
+    <div style="padding:10px 12px;border-top:1px solid #e2e8f0;display:flex;gap:8px;background:white;">
+      <input type="text" id="aiChatInput" placeholder="Hỏi AI về học sinh, lớp, điểm (Hỗ trợ Gemini)..." style="flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:0.83rem;font-family:var(--font-family);outline:none;" onkeydown="if(event.key==='Enter')sendAiMessage()">
+      <button onclick="sendAiMessage()" id="btnSendAi" style="background:#0284c7;color:white;border:none;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;">➤</button>
+    </div>
+  </div>
+
+  <div class="toast-notification" id="toastNotif"></div>
+
+  <!-- THANH ĐIỀU HƯỚNG DƯỚI ĐÁY CHO ĐIỆN THOẠI (BOTTOM NAVIGATION BAR) -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-btn active" id="mNavDashboard" onclick="navigate('dashboard')">
+      <span class="m-nav-icon">📊</span>
+      <span class="m-nav-label">Tổng Quan</span>
+    </button>
+    <button class="mobile-nav-btn" id="mNavKttx" onclick="navigate('kttx')">
+      <span class="m-nav-icon">📝</span>
+      <span class="m-nav-label">KTTX</span>
+    </button>
+    <button class="mobile-nav-btn" id="mNavLms" onclick="navigate('lms')">
+      <span class="m-nav-icon">📋</span>
+      <span class="m-nav-label">LMS</span>
+    </button>
+    <button class="mobile-nav-btn" id="mNavTkb" onclick="navigate('tkb')">
+      <span class="m-nav-icon">📅</span>
+      <span class="m-nav-label">TKB</span>
+    </button>
+    <button class="mobile-nav-btn" id="mNavAi" onclick="toggleAiChat()">
+      <span class="m-nav-icon">🤖</span>
+      <span class="m-nav-label">EDU-BOT</span>
+    </button>
+  </nav>
+
+  <script src="auth.js"></script>
+  <script src="data_tkb_school_41.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

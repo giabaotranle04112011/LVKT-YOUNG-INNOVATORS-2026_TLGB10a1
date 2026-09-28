@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Nhập | Hệ Thống Quản Lý &amp; LMS THCS &amp; THPT Liên Việt Kontum</title>
+  <meta name="author" content="Trần Lê Gia Bảo - Lớp 10A1, THCS &amp; THPT Liên Việt Kon Tum">
+  <meta name="description" content="Hệ thống Quản lý học sinh &amp; LMS vnEdu AI trường THCS &amp; THPT Liên Việt Kon Tum">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .demo-accounts-box {
+      margin-top: 10px;
+      padding: 9px 12px;
+      background: #f8fafc;
+      border: 1.2px solid #e2e8f0;
+      border-radius: 10px;
+    }
+    .demo-chip-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .btn-demo-chip {
+      background: white;
+      border: 1.2px solid #cbd5e1;
+      padding: 5px 6px;
+      border-radius: 7px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      font-family: var(--font-family);
+      text-align: center;
+      transition: all 0.15s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .btn-demo-chip:hover {
+      background: #0284c7;
+      color: white;
+      border-color: #0284c7;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(2,132,199,0.25);
+    }
+    .password-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-toggle-btn {
+      position: absolute;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #64748b;
+      padding: 2px;
+      transition: color 0.15s;
+    }
+    .password-toggle-btn:hover {
+      color: #0284c7;
+    }
+    @media (max-width: 640px) {
+      .demo-chip-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+      .btn-demo-chip {
+        font-size: 0.72rem;
+        padding: 8px 6px;
+        min-height: 38px;
+      }
+      .login-left-panel {
+        padding: 16px 16px 12px 16px !important;
+      }
+      .login-right-panel {
+        padding: 18px 16px !important;
+      }
+      .login-brand-badge {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+      }
+      .login-glass-features {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="login-body">
+
+  <div class="login-wrapper">
+
+    <!-- Panel trái: Branding & Thống kê trường -->
+    <div class="login-left-panel">
+      <div class="login-brand">
+        <div class="login-brand-badge">🎓</div>
+        <h1 style="font-size:1.25rem;line-height:1.2;margin:0 0 4px 0;">HỆ THỐNG QUẢN LÝ<br>&amp; LMS TRỰC TUYẾN</h1>
+        <p style="font-size:0.82rem;font-weight:700;opacity:0.95;margin:0 0 3px 0;color:#e0f2fe;">THCS &amp; THPT Liên Việt Kontum</p>
+        <p style="font-size:0.71rem;opacity:0.8;margin:0 0 8px 0;line-height:1.35;">Phát hiện sớm nguy cơ sa sút học tập &amp; Phân hệ giao bài tập vnEdu AI</p>
+        
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:12px;border:1px solid rgba(255,255,255,0.25);font-size:0.72rem;font-weight:800;backdrop-filter:blur(4px);">
+          <span>👨‍💻 Tác giả:</span> <span style="color:#fef08a;">Trần Lê Gia Bảo (Lớp 10A1)</span>
+        </div>
+      </div>
+
+      <!-- LIQUID FROSTED GLASS FEATURE SHOWCASE (THAY THẾ 3 HỘP THỐNG KÊ CŨ) -->
+      <div class="login-glass-features" style="background:rgba(255,255,255,0.08);border:1.2px solid rgba(255,255,255,0.2);border-radius:14px;padding:12px 14px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,0.15);margin:12px 0;">
+        <div style="font-size:0.72rem;font-weight:800;color:#7dd3fc;text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+          <span class="status-dot-pulse" style="background:#38bdf8;box-shadow:0 0 0 2px rgba(56,189,248,0.3);"></span>
+          <span>NỀN TẢNG CÔNG NGHỆ ĐỘT PHÁ:</span>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <!-- Feature 1: AI Gemini Flash -->
+          <div style="display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,0.06);padding:6px 9px;border-radius:9px;border:1px solid rgba(255,255,255,0.12);">
+            <div style="font-size:1.15rem;line-height:1;margin-top:1px;">🤖</div>
+            <div style="flex:1;">
+              <div style="font-size:0.79rem;font-weight:800;color:#f0f9ff;">Trợ Lý Cố Vấn AI (Gemini 2.5 Flash)</div>
+              <div style="font-size:0.68rem;color:rgba(224,242,254,0.85);margin-top:1px;">Cảnh báo sớm 14–21 ngày · Chuẩn xác 95.0%</div>
+            </div>
+          </div>
+
+          <!-- Feature 2: LMS vnEdu AI -->
+          <div style="display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,0.06);padding:6px 9px;border-radius:9px;border:1px solid rgba(255,255,255,0.12);">
+            <div style="font-size:1.15rem;line-height:1;margin-top:1px;">📋</div>
+            <div style="flex:1;">
+              <div style="font-size:0.79rem;font-weight:800;color:#f0f9ff;">LMS Giao Bài Tập &amp; Thi Trực Tuyến</div>
+              <div style="font-size:0.68rem;color:rgba(224,242,254,0.85);margin-top:1px;">Giao bài đa lớp · AI phân tích lỗi sai từng bước</div>
+            </div>
+          </div>
+
+          <!-- Feature 3: TKB Liên Việt Kon Tum -->
+          <div style="display:flex;align-items:flex-start;gap:9px;background:rgba(255,255,255,0.06);padding:6px 9px;border-radius:9px;border:1px solid rgba(255,255,255,0.12);">
+            <div style="font-size:1.15rem;line-height:1;margin-top:1px;">📅</div>
+            <div style="flex:1;">
+              <div style="font-size:0.79rem;font-weight:800;color:#f0f9ff;">Thời Khóa Biểu Số Hóa Tự Động</div>
+              <div style="font-size:0.68rem;color:rgba(224,242,254,0.85);margin-top:1px;">Đồng bộ trực tiếp TKB 41 lớp từ lienvietkontum.quangngai.edu.vn</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Pills -->
+        <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;">
+          <span style="background:rgba(56,189,248,0.2);color:#bae6fd;border:1px solid rgba(56,189,248,0.35);padding:2px 7px;border-radius:10px;font-size:0.64rem;font-weight:700;">🟢 Gemini AI Online</span>
+          <span style="background:rgba(74,222,128,0.2);color:#bbf7d0;border:1px solid rgba(74,222,128,0.35);padding:2px 7px;border-radius:10px;font-size:0.64rem;font-weight:700;">⚡ 41 Lớp Toàn Trường</span>
+          <span style="background:rgba(251,191,36,0.2);color:#fef08a;border:1px solid rgba(251,191,36,0.35);padding:2px 7px;border-radius:10px;font-size:0.64rem;font-weight:700;">🛡️ Vận Hành Offline</span>
+        </div>
+      </div>
+
+      <div style="font-size:0.68rem;opacity:0.65;margin-top:6px;display:flex;align-items:center;justify-content:space-between;">
+        <span>Năm học 2026 – 2027</span>
+        <span>Cuộc thi LVKT Young Innovators</span>
+      </div>
+    </div>
+
+    <!-- Panel phải: Form đăng nhập -->
+    <div class="login-right-panel">
+      <h2>Đăng Nhập</h2>
+      <p class="login-subtitle">Chọn tài khoản nhanh 1-click hoặc nhập thông tin được cấp.</p>
+
+      <div class="login-error-msg" id="loginErrorMsg"></div>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="login-form-group">
+          <label for="inputUsername">Tên đăng nhập</label>
+          <input type="text" id="inputUsername" placeholder="Tên đăng nhập..." autocomplete="username" required>
+        </div>
+        <div class="login-form-group">
+          <label for="inputPassword">Mật khẩu</label>
+          <div class="password-wrapper">
+            <input type="password" id="inputPassword" placeholder="Mật khẩu..." autocomplete="current-password" required style="padding-right:34px;">
+            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()" title="Hiện/ẩn mật khẩu">👁️</button>
+          </div>
+        </div>
+        <button type="submit" class="login-btn-submit" id="loginSubmitBtn">
+          🔐 Đăng Nhập Hệ Thống
+        </button>
+      </form>
+
+      <!-- TÀI KHOẢN MẪU DÙNG THỬ 1-CLICK -->
+      <div class="demo-accounts-box">
+        <div style="font-size:0.72rem;font-weight:800;color:#0284c7;display:flex;align-items:center;justify-content:space-between;">
+          <span>⚡ TÀI KHOẢN TRUY CẬP NHANH (BẢN CHÍNH THỨC):</span>
+          <span style="font-size:0.66rem;color:#64748b;font-weight:600;">Tự động đăng nhập</span>
+        </div>
+        <div class="demo-chip-grid">
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('giabaotranle04','1414@#22gbbn')" title="Admin Tổng Gia Bảo">👑 Admin Tổng</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('bgh_kontum','bgh2026')" title="Ban Giám Hiệu">🏛️ Ban Giám Hiệu</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('tpt_lienviett','tpt2026')" title="Tổng Phụ Trách Đội">🎗️ Tổng Phụ Trách</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('gvcn_12c1','gvcn2026')" title="GVCN Lớp 12C1">📋 GVCN 12C1</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('gvbm_toan','gvbm2026')" title="GVBM Toán ra bài tập">📐 GVBM Toán</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('hs_10a1','hs2026')" title="Học sinh Trần Lê Gia Bảo (Lớp 10A1)" style="color:#0284c7;font-weight:800;background:#f0f9ff;border-color:#bae6fd;">🎒 HS 10A1 (Bảo)</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('hs_12c1','hs2026')" title="Học sinh Phan Ánh Thư (Lớp 12C1)">🎒 HS 12C1 (Thư)</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('hs_12c5','hs2026')" title="Học sinh Đặng Ánh Giang (Lớp 12C5 - Mở ngay TKB 12C5)" style="color:#854d0e;font-weight:800;background:#fefce8;border-color:#fef08a;">🎒 HS 12C5 (TKB)</button>
+          <button type="button" class="btn-demo-chip" onclick="fillAndLogin('hs_10a2','hs2026')" title="Học sinh Đặng Kim Như (Lớp 10A2 - Mở ngay TKB 10A2)" style="color:#15803d;font-weight:800;background:#f0fdf4;border-color:#bbf7d0;">🎒 HS 10A2 (TKB)</button>
+        </div>
+
+        <!-- BỘ CHỌN NHANH HỌC SINH 41 LỚP TOÀN TRƯỜNG -->
+        <div style="margin-top:8px;padding-top:7px;border-top:1px dashed #cbd5e1;display:flex;align-items:center;gap:6px;">
+          <span style="font-size:0.69rem;font-weight:800;color:#0369a1;white-space:nowrap;">🎯 Đăng nhập theo Lớp:</span>
+          <select id="quickClassStudentSelect" onchange="if(this.value)loginAsClassStudent(this.value)" style="flex:1;border:1.2px solid #38bdf8;background:white;color:#0f172a;padding:4px 8px;border-radius:6px;font-size:0.73rem;font-weight:700;outline:none;cursor:pointer;">
+            <option value="">-- Chọn 1 trong 41 Lớp Toàn Trường --</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="login-footer-note">
+        🛡️ Vận hành nội bộ Offline — Trường THCS &amp; THPT Liên Việt Kontum.<br>
+        💡 Sáng kiến &amp; phát triển: <strong>Trần Lê Gia Bảo — Lớp 10A1</strong>.
+      </p>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    (function() {
+      initUsers();
+      const session = getSession();
+      if (session) {
+        window.location.href = session.role === "student" ? "student.html" : "index.html";
+      }
+
+      // Nạp danh sách 41 lớp vào dropdown đăng nhập nhanh học sinh
+      const sel = document.getElementById("quickClassStudentSelect");
+      if (sel && typeof CLASS_GROUPS !== "undefined") {
+        Object.entries(CLASS_GROUPS).forEach(([groupName, classes]) => {
+          const optgroup = document.createElement("optgroup");
+          optgroup.label = groupName;
+          classes.forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c;
+            opt.textContent = `Lớp ${c} (Học sinh & TKB)`;
+            optgroup.appendChild(opt);
+          });
+          sel.appendChild(optgroup);
+        });
+      }
+    })();
+
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById("inputPassword");
+      if (pwdInput.type === "password") {
+        pwdInput.type = "text";
+      } else {
+        pwdInput.type = "password";
+      }
+    }
+
+    function fillAndLogin(u, p) {
+      document.getElementById("inputUsername").value = u;
+      document.getElementById("inputPassword").value = p;
+      document.getElementById("loginForm").dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById("inputUsername").value.trim();
+      const password = document.getElementById("inputPassword").value.trim();
+      const btn = document.getElementById("loginSubmitBtn");
+      const errBox = document.getElementById("loginErrorMsg");
+
+      errBox.classList.remove("visible");
+      btn.textContent = "⏳ Đang xác thực...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        const result = doLogin(username, password);
+        if (result.ok) {
+          btn.textContent = "✅ Đang chuyển hướng...";
+          window.location.href = result.session.role === "student" ? "student.html" : "index.html";
+        } else {
+          errBox.textContent = result.msg;
+          errBox.classList.add("visible");
+          btn.textContent = "🔐 Đăng Nhập Hệ Thống";
+          btn.disabled = false;
+        }
+      }, 300);
+    }
+  </script>
+</body>
+</html>

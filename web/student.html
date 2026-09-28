@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cổng Học Sinh | THCS &amp; THPT Liên Việt Kontum</title>
+  <meta name="author" content="Trần Lê Gia Bảo - Lớp 10A1, THCS &amp; THPT Liên Việt Kon Tum">
+  <meta name="description" content="Cổng thông tin rèn luyện cá nhân &amp; Cố vấn AI EDU-BOT - Trường THCS &amp; THPT Liên Việt Kon Tum">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    window.escapeHtml = function(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    };
+    var escapeHtml = window.escapeHtml;
+  </script>
+  <style>
+    .student-grid-layout {
+      display: grid;
+      grid-template-columns: 390px 1fr;
+      gap: 18px;
+      padding: 18px 24px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    @media (max-width: 990px) {
+      .student-grid-layout {
+        grid-template-columns: 1fr;
+        padding: 14px 16px;
+      }
+    }
+    @media (max-width: 768px) {
+      .student-grid-layout {
+        grid-template-columns: 1fr;
+        padding: 10px 12px;
+        gap: 12px;
+      }
+      .student-top-bar {
+        padding: 8px 12px !important;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .student-top-bar-brand {
+        justify-content: space-between;
+      }
+      .author-chip {
+        display: none !important;
+      }
+      .student-user-capsule {
+        padding: 4px 8px;
+        font-size: 0.72rem;
+      }
+      .student-welcome-hero {
+        padding: 14px 12px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+      }
+      .student-welcome-hero > div:last-child {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        width: 100% !important;
+      }
+      .kttx-stu-table th, .kttx-stu-table td {
+        padding: 6px 8px;
+        font-size: 0.74rem;
+        white-space: nowrap;
+      }
+      .student-chat-box {
+        height: 340px;
+      }
+    }
+    .kttx-stu-table th, .kttx-stu-table td {
+      padding: 9px 12px;
+      font-size: 0.82rem;
+    }
+    .student-chat-box {
+      border: 1.5px solid #bae6fd;
+      border-radius: 14px;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      height: 400px;
+      overflow: hidden;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.06);
+    }
+    .student-chat-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f8fafc;
+    }
+    .student-chat-input-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 14px;
+      border-top: 1px solid #e2e8f0;
+      background: white;
+    }
+    .quick-ask-chip {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 16px;
+      padding: 5px 12px;
+      font-size: 0.74rem;
+      color: #0284c7;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .quick-ask-chip:hover {
+      background: #0284c7;
+      color: white;
+    }
+    .profile-info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      padding: 4px 0;
+    }
+    .profile-info-label {
+      color: #64748b;
+      min-width: 105px;
+      font-weight: 500;
+    }
+    .profile-info-val {
+      color: #0f172a;
+      font-weight: 600;
+    }
+    /* TOP BAR NÂNG CẤP LIQUID GLASS */
+    .student-top-bar {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1.5px solid rgba(226, 232, 240, 0.85);
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+      z-index: 50;
+    }
+    .student-top-bar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+      border: 1.5px solid rgba(255, 255, 255, 0.6);
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #0f172a 0%, #0369a1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+    .brand-sub {
+      font-size: 0.74rem;
+      color: #64748b;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .status-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+      animation: pulseDot 2s infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.7; }
+    }
+
+    /* AUTHOR CHIP */
+    .author-chip {
+      background: linear-gradient(135deg, rgba(224, 242, 254, 0.75) 0%, rgba(240, 249, 255, 0.95) 100%);
+      border: 1.5px solid rgba(186, 230, 253, 0.9);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      color: #0369a1;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.08);
+      transition: all 0.2s ease;
+    }
+    .author-chip:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15);
+      border-color: #0284c7;
+    }
+
+    /* USER PROFILE CAPSULE */
+    .student-user-capsule {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(248, 250, 252, 0.85);
+      border: 1.5px solid rgba(226, 232, 240, 0.9);
+      padding: 4px 12px 4px 6px;
+      border-radius: 24px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .logout-btn-pill {
+      background: rgba(254, 242, 242, 0.9);
+      border: 1.5px solid #fecaca;
+      color: #dc2626;
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .logout-btn-pill:hover {
+      background: #ef4444;
+      color: white;
+      border-color: #ef4444;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+    }
+
+    /* HERO WELCOME BANNER (GIAO DIỆN TRẮNG TRONG SUỐT KÍNH - LIQUID GLASS CAO CẤP) */
+    .student-welcome-hero {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      position: relative;
+      overflow: hidden;
+      color: #0f172a;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      border-bottom: 1.5px solid rgba(226, 232, 240, 0.95);
+      box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+    }
+    .student-welcome-hero::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      right: 18%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(35px);
+    }
+    .student-welcome-hero::after {
+      content: "";
+      position: absolute;
+      bottom: -50px;
+      left: 28%;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.10) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(35px);
+    }
+    .hero-content-left {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-greeting-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0f172a;
+    }
+    .hero-greeting-name {
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+    }
+    .hero-subtitle {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .hero-badges-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+    .hero-badge-pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+    }
+    .badge-class {
+      background: #f0f9ff;
+      border: 1.2px solid #bae6fd;
+      color: #0284c7;
+    }
+    .badge-id {
+      background: #f8fafc;
+      border: 1.2px solid #e2e8f0;
+      color: #475569;
+    }
+    .badge-rank {
+      background: #fefce8;
+      border: 1.2px solid #fef08a;
+      color: #b45309;
+    }
+    .badge-conduct {
+      background: #f0fdf4;
+      border: 1.2px solid #bbf7d0;
+      color: #15803d;
+    }
+    .badge-bot {
+      background: #fdf4ff;
+      border: 1.2px solid #f5d0fe;
+      color: #9333ea;
+    }
+
+    .hero-content-right {
+      position: relative;
+      z-index: 2;
+      text-align: right;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1.5px solid rgba(226, 232, 240, 0.95);
+      border-radius: 14px;
+      padding: 12px 18px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+    }
+    .hero-school-name {
+      font-size: 0.88rem;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: #0f172a;
+    }
+    .hero-school-sub {
+      font-size: 0.74rem;
+      color: #64748b;
+      margin-top: 3px;
+    }
+    .hero-tags-row {
+      display: flex;
+      gap: 6px;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+    .hero-tag-term {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      font-weight: 800;
+    }
+    .hero-tag-subj {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+      font-weight: 800;
+    }
+    .hero-tag {
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.2px;
+    }
+    .hero-tag-term {
+      background: rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+    }
+    .hero-tag-subj {
+      background: rgba(74, 222, 128, 0.2);
+      border: 1px solid rgba(74, 222, 128, 0.35);
+      color: #4ade80;
+    }
+  </style>
+</head>
+<body class="student-body" style="display:flex;flex-direction:column;height:100vh;overflow:hidden;">
+
+  <!-- TOP BAR HỌC SINH (NÂNG CẤP LIQUID GLASS) -->
+  <header class="student-top-bar" style="flex-shrink:0;">
+    <div class="student-top-bar-brand">
+      <div class="brand-logo-badge">🎓</div>
+      <div>
+        <div class="brand-title">THCS &amp; THPT LIÊN VIỆT KONTUM</div>
+        <div class="brand-sub">
+          <span>Góc Học Tập &amp; Cố Vấn AI Cá Nhân Hóa</span>
+          <span style="opacity:0.4;">•</span>
+          <span class="status-dot-pulse"></span>
+          <span style="color:#10b981;font-weight:700;">Trực tuyến 24/7</span>
+        </div>
+      </div>
+    </div>
+    
+    <div style="display:flex;align-items:center;gap:12px;">
+      <!-- Attribution Tác Giả -->
+      <div class="author-chip" title="Dự án nghiên cứu &amp; sáng tạo trẻ của học sinh Trường THCS &amp; THPT Liên Việt Kon Tum">
+        <span style="font-size:1rem;">👨‍💻</span>
+        <span>Thiết kế: <strong>Trần Lê Gia Bảo</strong> <span style="color:#0284c7;font-weight:800;">(Lớp 10A1)</span></span>
+      </div>
+
+      <!-- Notification Bell Bài Tập LMS -->
+      <button onclick="scrollToLmsSection()" class="logout-btn-pill" style="border-color:#bae6fd;background:#f0f9ff;color:#0369a1;display:flex;align-items:center;gap:6px;" title="Thông báo bài tập mới cần làm">
+        <span style="font-size:0.95rem;">🔔</span>
+        <span>Bài tập:</span>
+        <span id="studentNotifBellBadge" style="background:#ef4444;color:white;padding:1px 6px;border-radius:10px;font-size:0.68rem;font-weight:800;">0</span>
+      </button>
+
+      <!-- Hộp Thư Phản Hồi Từ Thầy/Cô & AI -->
+      <button onclick="openTeacherFeedbackModal()" class="logout-btn-pill" style="border-color:#bbf7d0;background:#f0fdf4;color:#15803d;display:flex;align-items:center;gap:6px;" title="Xem nhận xét &amp; lỗi sai được Thầy/Cô và AI gửi đến">
+        <span style="font-size:0.95rem;">💬</span>
+        <span>Nhận xét:</span>
+        <span id="teacherFeedbackBadge" style="background:#16a34a;color:white;padding:1px 6px;border-radius:10px;font-size:0.68rem;font-weight:800;display:none;">0</span>
+      </button>
+
+      <!-- Quick Class Switcher (Đổi vai học sinh sang lớp khác) -->
+      <button onclick="openStudentClassSwitchModal()" class="logout-btn-pill" style="border-color:#38bdf8;background:#f0f9ff;color:#0284c7;display:flex;align-items:center;gap:6px;" title="Chuyển sang xem học sinh của lớp khác (VD: 12C5, 10A2, 10A1...)">
+        <span>🔄</span> <span>Đổi Lớp HS</span>
+      </button>
+
+      <!-- User Profile Capsule -->
+      <div class="student-user-capsule">
+        <div id="studentAvatar" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;background:#e0f2fe;"></div>
+        <div>
+          <div class="user-name" id="studentHeaderName" style="font-size:0.83rem;font-weight:800;color:#0f172a;line-height:1.2;">Đang tải...</div>
+          <div class="user-role" id="studentHeaderRole" style="font-size:0.7rem;color:#0284c7;font-weight:700;">Học sinh</div>
+        </div>
+      </div>
+      
+      <!-- Logout Button -->
+      <button onclick="doLogout()" class="logout-btn-pill" title="Đăng xuất khỏi phiên làm việc">
+        <span>🚪</span> <span>Đăng xuất</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- BANNER CHÀO MỪNG (HERO CARD MÀU AURORA GLASS CAO CẤP) -->
+  <div class="student-welcome-hero">
+    <div class="hero-content-left">
+      <div class="hero-greeting-title">
+        <span>✨ Xin chào,</span>
+        <span id="welcomeName" class="hero-greeting-name">Phan Ánh Thư</span>!
+        <span>👋</span>
+      </div>
+      <div class="hero-subtitle">
+        Cổng thông tin rèn luyện cá nhân · Đồng hành cùng Trợ lý Cố vấn AI <strong>EDU-BOT</strong>
+      </div>
+      
+      <!-- HUY HIỆU THÔNG TIN DẠNG CAPSULE HIỆN ĐẠI (THAY THẾ DẤU GẠCH | CŨ) -->
+      <div class="hero-badges-row">
+        <div class="hero-badge-pill badge-class">
+          <span>🏫</span>
+          <span>Lớp: <strong id="welcomeClass">12C1</strong></span>
+        </div>
+        <div class="hero-badge-pill badge-id">
+          <span>🆔</span>
+          <span>Mã HS: <strong id="welcomeId">HS185</strong></span>
+        </div>
+        <div class="hero-badge-pill badge-rank">
+          <span>⭐</span>
+          <span>Học lực: <strong id="welcomeRank">Khá</strong></span>
+        </div>
+        <div class="hero-badge-pill badge-conduct">
+          <span>🎭</span>
+          <span>Hạnh kiểm: <strong id="welcomeConduct">Tốt</strong></span>
+        </div>
+        <div class="hero-badge-pill badge-bot">
+          <span class="status-dot-pulse"></span>
+          <span>EDU-BOT AI: <strong style="color:#9333ea;">Sẵn sàng 24/7</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HỘP THÔNG TIN TRƯỜNG PHÍA PHẢI -->
+    <div class="hero-content-right">
+      <div class="hero-school-name">🏫 TRƯỜNG THCS &amp; THPT LIÊN VIỆT KONTUM</div>
+      <div class="hero-school-sub">Cổng Cố Vấn Học Tập &amp; Giám Sát KTTX Cá Nhân Hóa</div>
+      <div class="hero-tags-row">
+        <span class="hero-tag hero-tag-term">📅 Năm học 2026 – 2027</span>
+        <span class="hero-tag hero-tag-subj">📚 35+ Môn học</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NỘI DUNG CHÍNH: 2 CỘT -->
+  <div class="student-grid-layout">
+
+    <!-- CỘT TRÁI: HỒ SƠ CÁ NHÂN + KPI + ĐỒ THỊ 8 TUẦN + XAI + KẾ HOẠCH -->
+    <div>
+      
+      <!-- CARD HỒ SƠ HỌC SINH & GIA ĐÌNH -->
+      <div class="card-box" style="margin-bottom:14px;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);border:1.5px solid #e2e8f0;border-radius:14px;padding:16px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e2e8f0;">
+          <div id="stuAvatarCardContainer" style="width:68px;height:68px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:1.08rem;font-weight:800;color:#0f172a;" id="stuProfileName">Đang nạp hồ sơ...</div>
+            <div style="font-size:0.78rem;color:#0284c7;font-weight:700;" id="stuProfileClassId">Lớp -- · Mã HS: --</div>
+            <div style="font-size:0.75rem;color:#64748b;margin-top:2px;" id="stuProfileDobGender">📅 Ngày sinh: -- · Giới tính: --</div>
+          </div>
+          <div id="stuProfileConductBadge" style="padding:5px 12px;border-radius:20px;font-size:0.75rem;font-weight:800;background:#dcfce7;color:#15803d;white-space:nowrap;">Tốt</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <div class="profile-info-row">
+            <span class="profile-info-label">📍 Địa chỉ:</span>
+            <span class="profile-info-val" id="stuProfileAddress">Nguyễn Thị Cương, Đăk BLa, Quảng Ngãi, Việt Nam</span>
+          </div>
+          <div class="profile-info-row">
+            <span class="profile-info-label">👨‍👩‍👧 Phụ huynh:</span>
+            <span class="profile-info-val" id="stuProfileParent">--</span>
+          </div>
+          <div class="profile-info-row">
+            <span class="profile-info-label">📞 SĐT Phụ huynh:</span>
+            <a href="#" id="stuProfilePhone" style="font-weight:700;color:#0284c7;text-decoration:none;display:inline-flex;align-items:center;gap:5px;background:#e0f2fe;padding:2px 10px;border-radius:8px;">
+              <span>--</span> <span>📞</span>
+            </a>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;margin-top:6px;padding-top:8px;border-top:1px dashed #e2e8f0;">
+            <span class="profile-info-label" style="min-width:105px;">📝 Nhận xét rèn luyện:</span>
+            <span style="font-size:0.76rem;color:#475569;font-style:italic;" id="stuProfileNotes">--</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 KPI CARDS -->
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;">
+        <div class="kpi-card" style="padding:12px;">
+          <div class="kpi-label" style="font-size:0.72rem;">Điểm TB Chung</div>
+          <div class="kpi-value" id="spAvgScore" style="color:#0284c7;font-size:1.6rem;">--</div>
+          <div style="font-size:0.72rem;font-weight:700;color:#0369a1;" id="spAcademicRank">--</div>
+        </div>
+        <div class="kpi-card" style="padding:12px;">
+          <div class="kpi-label" style="font-size:0.72rem;">Hạnh Kiểm</div>
+          <div class="kpi-value" id="spConduct" style="color:#10b981;font-size:1.3rem;">--</div>
+          <div style="font-size:0.72rem;color:#15803d;font-weight:600;" id="spConductSub">Rèn luyện tốt</div>
+        </div>
+        <div class="kpi-card" style="padding:12px;">
+          <div class="kpi-label" style="font-size:0.72rem;">Bài Tập Về Nhà</div>
+          <div class="kpi-value" id="spHwRate" style="color:#f59e0b;font-size:1.6rem;">--%</div>
+          <div style="font-size:0.7rem;color:#b45309;" id="spHwSub">Hoàn thành</div>
+        </div>
+        <div class="kpi-card" style="padding:12px;">
+          <div class="kpi-label" style="font-size:0.72rem;">Chuyên Cần</div>
+          <div class="kpi-value" id="spAbsences" style="color:#6366f1;font-size:1.6rem;">--</div>
+          <div style="font-size:0.7rem;color:#4f46e5;" id="spAbsSub">buổi vắng</div>
+        </div>
+      </div>
+
+      <!-- ĐỒ THỊ 8 TUẦN -->
+      <div class="card-box" style="margin-bottom:14px;">
+        <div class="card-box-header">
+          <div class="card-box-title" style="font-size:0.86rem;">📈 Diễn Biến Điểm Số 8 Tuần</div>
+          <span id="spStatusBadge" class="status-pill pill-high">ĐANG TẢI...</span>
+        </div>
+        <svg id="spTrendChartSvg" viewBox="0 0 320 100" style="width:100%;height:115px;"></svg>
+        <div style="font-size:0.74rem;color:var(--text-muted);margin-top:6px;" id="spAnalysisSummary">
+          Đang phân tích phong độ học tập...
+        </div>
+      </div>
+
+      <!-- XAI ATTRIBUTION -->
+      <div class="card-box" style="margin-bottom:14px;">
+        <div class="card-box-title" style="font-size:0.86rem;margin-bottom:8px;">🔍 Bóc Tách Yếu Tố Ảnh Hưởng (XAI)</div>
+        <div id="spXaiContent"></div>
+      </div>
+
+      <!-- KẾ HOẠCH CAN THIỆP 3 BÊN -->
+      <div class="card-box">
+        <div class="card-box-title" style="font-size:0.86rem;margin-bottom:10px;">🎯 Kế Hoạch Đồng Hành 3 Bên</div>
+        <div id="spPlanContent"></div>
+        <div style="margin-top:12px;">
+          <button onclick="simulateRecovery()" style="background:#10b981;color:white;border:none;padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;width:100%;font-size:0.8rem;font-family:var(--font-family);transition:all 0.15s;">
+            ⚡ Mô Phỏng Kết Quả Sau 4 Tuần Can Thiệp
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CỘT PHẢI: BÀI TẬP LMS VNEDU + BẢNG ĐIỂM KTTX + EDU-BOT AI COACH CHAT -->
+    <div>
+
+      <!-- BÀI TẬP & ÔN LUYỆN TRỰC TUYẾN (LMS VNEDU AI) -->
+      <div class="card-box" id="studentLmsCardSection" style="margin-bottom:14px;padding:0;overflow:hidden;border:1.5px solid #bae6fd;box-shadow:0 4px 16px rgba(2,132,199,0.08);">
+        <div style="padding:12px 16px;border-bottom:1px solid #bae6fd;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="font-size:1.35rem;background:#0284c7;color:white;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;">📋</div>
+            <div>
+              <div style="font-weight:900;font-size:0.92rem;color:#0f172a;">Bài Tập &amp; Ôn Luyện Trực Tuyến (LMS vnEdu AI)</div>
+              <div style="font-size:0.72rem;color:#0369a1;">Giao bởi Giáo viên bộ môn · AI chấm điểm &amp; phân tích lỗi sai tức thì</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button onclick="openTeacherFeedbackModal()" class="btn-demo-chip" style="background:#f0fdf4;border-color:#86efac;color:#15803d;font-weight:800;font-size:0.75rem;padding:4px 10px;cursor:pointer;" title="Xem nhận xét và hướng dẫn khắc phục lỗi sai từ Thầy/Cô và AI">
+              <span>💬</span> <span>Hộp Thư Nhận Xét</span>
+              <span id="teacherFeedbackCardBadge" style="background:#16a34a;color:white;padding:1px 6px;border-radius:10px;font-size:0.68rem;font-weight:800;display:none;">0</span>
+            </button>
+            <span id="studentLmsBadgeCount" style="font-size:0.75rem;font-weight:800;background:#0284c7;color:white;padding:3px 10px;border-radius:12px;">
+              0 Bài Tập
+            </span>
+          </div>
+        </div>
+        <div id="studentAssignmentsList" style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;background:#fafcff;">
+          <div style="text-align:center;padding:16px;color:#94a3b8;font-size:0.8rem;">Đang tải danh sách bài tập của lớp...</div>
+        </div>
+      </div>
+
+      <!--  -->
+      <div class="card-box" id="studentTkbSection" style="margin-bottom:14px;padding:0;overflow:hidden;border:1.5px solid #bae6fd;box-shadow:0 6px 20px rgba(2,132,199,0.08);">
+        <div style="padding:12px 16px;border-bottom:1px solid #bae6fd;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#f0f9ff 0%,#e0f2fe 100%);flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="font-size:1.35rem;background:linear-gradient(135deg,#0284c7,#0369a1);color:white;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(2,132,199,0.3);">📅</div>
+            <div>
+              <div style="font-weight:900;font-size:0.92rem;color:#0f172a;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span>Thời Khóa Biểu —</span>
+                <span id="stuTkbClassTitle" style="color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:6px;font-weight:900;">Lớp 12C1</span>
+                
+                <!-- BỘ CHỌN LỚP XEM TKB TRỰC TIẾP (41 LỚP) -->
+                <div style="display:inline-flex;align-items:center;gap:4px;background:white;padding:2px 6px;border-radius:6px;border:1px solid #bae6fd;margin-left:4px;">
+                  <span style="font-size:0.7rem;color:#64748b;font-weight:700;">Đổi lớp xem:</span>
+                  <select id="stuTkbClassSelector" onchange="onStudentTkbClassChange(this.value)" style="border:none;background:transparent;color:#0284c7;font-weight:800;font-size:0.75rem;outline:none;cursor:pointer;">
+                    <option value="">Đang tải danh sách 41 lớp...</option>
+                  </select>
+                </div>
+                <button type="button" id="btnStuTkbMyClass" onclick="resetStudentTkbToMyClass()" class="quick-ask-chip" style="display:none;background:#f0fdf4;color:#16a34a;border:1px solid #86efac;font-weight:800;font-size:0.7rem;padding:3px 8px;">⭐ Về Lớp Của Em</button>
+              </div>
+              <div style="font-size:0.72rem;color:#0369a1;margin-top:2px;">
+                Đồng bộ từ cổng trường Liên Việt Kon Tum · Tự động mở đúng TKB lớp của học sinh
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span id="stuTkbTodayBadge" style="background:#0284c7;color:white;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:800;animation:pulseToday 2s infinite ease-in-out;">
+              🔔 Hôm nay: Thứ Hai
+            </span>
+            <div style="display:flex;gap:4px;">
+              <button type="button" class="quick-ask-chip" id="btnStuTkbMorning" onclick="switchStuTkbSession('morning')" style="font-size:0.72rem;padding:3px 8px;">☀️ Sáng</button>
+              <button type="button" class="quick-ask-chip" id="btnStuTkbAfternoon" onclick="switchStuTkbSession('afternoon')" style="font-size:0.72rem;padding:3px 8px;">🌆 Chiều</button>
+              <button type="button" class="quick-ask-chip" id="btnStuTkbAll" onclick="switchStuTkbSession('all')" style="font-size:0.72rem;padding:3px 8px;background:#0284c7;color:white;">Cả Ngày</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- GRID LƯỚI TKB HỌC SINH -->
+        <div style="overflow-x:auto;padding:12px;" id="studentTkbContainer">
+          <div style="text-align:center;padding:16px;color:#94a3b8;font-size:0.8rem;">Đang tải thời khóa biểu...</div>
+        </div>
+      </div>
+
+      <!-- BẢNG ĐIỂM KTTX CÁC MÔN HỌC -->
+      <div class="card-box" style="margin-bottom:14px;padding:0;overflow:hidden;">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;background:#f8fafc;">
+          <div>
+            <div style="font-weight:800;font-size:0.9rem;color:#0f172a;">📝 Bảng Điểm KTTX Chi Tiết Các Môn Học</div>
+            <div style="font-size:0.74rem;color:#64748b;">Hệ số: KTTX1 (×1) · KTTX2 (×1) · Giữa Kỳ (×2) · Cuối Kỳ (×3)</div>
+          </div>
+          <span style="font-size:0.75rem;font-weight:700;background:#e0f2fe;color:#0284c7;padding:3px 10px;border-radius:12px;">HK 1 · 2026–2027</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="data-table kttx-stu-table" style="margin:0;">
+            <thead>
+              <tr>
+                <th>Môn học</th>
+                <th style="background:#fef3c7;color:#92400e;text-align:center;">KTTX 1</th>
+                <th style="background:#fef3c7;color:#92400e;text-align:center;">KTTX 2</th>
+                <th style="background:#dbeafe;color:#1e40af;text-align:center;">Giữa Kỳ (×2)</th>
+                <th style="background:#ede9fe;color:#4c1d95;text-align:center;">Cuối Kỳ (×3)</th>
+                <th style="background:#dcfce7;color:#15803d;font-weight:800;text-align:center;">TB Môn</th>
+                <th style="text-align:center;">Xếp loại</th>
+              </tr>
+            </thead>
+            <tbody id="stuSubjectTableBody">
+              <tr><td colspan="7" style="text-align:center;padding:16px;color:#94a3b8;">Đang tải bảng điểm...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EDU-BOT AI COACH & LIVE CHAT (GEMINI 1.5 FLASH TÍCH HỢP) -->
+      <div class="card-box">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid var(--border-light);">
+          <div style="font-size:2rem;line-height:1;background:linear-gradient(135deg,#e0f2fe,#bae6fd);width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">🤖</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="font-size:1rem;font-weight:800;color:#0284c7;">EDU-BOT: Trợ Lý AI Cố Vấn Học Tập Cá Nhân</span>
+              <span style="background:#f0fdf4;border:1px solid #bbf7d0;color:#16a34a;font-size:0.68rem;padding:2px 7px;border-radius:10px;font-weight:700;">Google Gemini Powered</span>
+            </div>
+            <div style="font-size:0.74rem;color:var(--text-muted);">Đồng hành học tập cá nhân hóa · THCS &amp; THPT Liên Việt Kontum</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:0.75rem;color:#10b981;font-weight:700;">
+            <span class="status-dot-active"></span> Trực tuyến 24/7
+          </div>
+        </div>
+
+        <!-- 3 BƯỚC HÀNH ĐỘNG NHANH CỦA AI -->
+        <div class="edubot-bubble" style="margin-bottom:12px;">
+          <p id="aiGreeting" style="font-weight:700;color:#0369a1;margin-bottom:6px;font-size:0.86rem;">Đang phân tích dữ liệu của bạn...</p>
+          <p id="aiDiagnosis" style="color:#334155;font-size:0.82rem;line-height:1.6;"></p>
+          <div style="font-weight:700;font-size:0.78rem;color:#0284c7;margin-top:10px;margin-bottom:6px;">📌 3 BƯỚC HÀNH ĐỘNG AI GỢI Ý CHO BẠN:</div>
+          <ul class="coach-step-list" id="aiActionList">
+            <li style="opacity:0.5;">Đang tải kế hoạch...</li>
+          </ul>
+        </div>
+
+        <!-- NÚT HÀNH ĐỘNG HỌC TẬP -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">
+          <button class="btn-student-action" onclick="studentAction('worksheet')" style="margin:0;font-size:0.78rem;text-align:center;">
+            📥 Tải Phiếu Ôn Tập AI
+          </button>
+          <button class="btn-student-action" onclick="studentAction('message_teacher')" style="margin:0;font-size:0.78rem;text-align:center;">
+            💬 Xin Thầy/Cô Hỗ Trợ
+          </button>
+          <button class="btn-student-action" onclick="studentAction('commit_target')" style="margin:0;font-size:0.78rem;text-align:center;">
+            🎯 Cam Kết Tăng +1.5đ
+          </button>
+        </div>
+
+        <!-- HỘP CHAT TRỰC TIẾP VỚI EDU-BOT -->
+        <div style="font-size:0.82rem;font-weight:700;color:#0f172a;margin-top:10px;">
+          💬 Hỏi đáp trực tiếp cùng EDU-BOT:
+        </div>
+        <div style="display:flex;gap:6px;margin:8px 0;overflow-x:auto;padding-bottom:4px;">
+          <button type="button" class="quick-ask-chip" onclick="quickAsk('Làm sao để cải thiện điểm môn Toán?')">📐 Cải thiện môn Toán</button>
+          <button type="button" class="quick-ask-chip" onclick="quickAsk('Học lực và hạnh kiểm của em hiện tại thế nào?')">🎭 Học lực &amp; Hạnh kiểm</button>
+          <button type="button" class="quick-ask-chip" onclick="quickAsk('Môn nào của em đang có nguy cơ sa sút?')">⚠️ Môn cần chú ý</button>
+          <button type="button" class="quick-ask-chip" onclick="quickAsk('Gợi ý thời gian biểu tự học buổi tối')">⏰ Lịch học buổi tối</button>
+          <button type="button" class="quick-ask-chip" onclick="quickAsk('Hệ thống này do ai thiết kế?')">👨‍💻 Tác giả dự án</button>
+        </div>
+
+        <div class="student-chat-box">
+          <div class="student-chat-msgs" id="stuChatMessages"></div>
+          <div class="student-chat-input-bar">
+            <input type="text" id="stuChatInput" placeholder="Hỏi EDU-BOT về bài tập, phương pháp học, giải bài, lịch ôn..." style="flex:1;border:1.5px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:0.82rem;outline:none;" onkeydown="if(event.key==='Enter')sendStudentAiMessage()">
+            <button onclick="sendStudentAiMessage()" id="btnSendStudentAi" style="background:#0284c7;color:white;border:none;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;">
+              <span>Gửi</span> <span>➤</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER TÁC GIẢ -->
+  <footer style="text-align:center;padding:10px 16px;font-size:0.75rem;color:#64748b;background:white;border-top:1px solid #e2e8f0;flex-shrink:0;">
+    Dự án Hệ Thống Quản Lý &amp; Cố Vấn Học Tập AI được thiết kế và phát triển bởi học sinh <strong>Trần Lê Gia Bảo</strong> — Lớp 10A1, Trường THCS &amp; THPT Liên Việt Kon Tum · Năm học 2026 - 2027
+  </footer>
+
+  <!--  -->
+  <div id="modalStudentExam" class="lms-exam-modal-overlay" style="display:none;">
+    <div class="lms-exam-container">
+      
+      <!-- HEADER EXAM -->
+      <div class="lms-exam-header">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:1.4rem;">📝</span>
+            <div>
+              <div style="font-weight:900;font-size:1.1rem;color:white;" id="examModalTitle">Bài Tập Trực Tuyến</div>
+              <div style="font-size:0.75rem;color:#bae6fd;margin-top:2px;" id="examModalSubtitle">Môn học: -- · Thời lượng: -- phút</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:14px;">
+          <!-- Đồng hồ đếm ngược -->
+          <div class="lms-timer-capsule" id="examTimerCapsule">
+            <span>⏱️</span>
+            <span id="examTimerDisplay">20:00</span>
+          </div>
+          <button type="button" onclick="cancelStudentExam()" style="background:rgba(255,255,255,0.15);border:none;color:white;padding:6px 12px;border-radius:8px;font-size:0.75rem;font-weight:700;cursor:pointer;">
+            ✕ Thoát
+          </button>
+        </div>
+      </div>
+
+      <!-- THANH GIÁM SÁT CHỐNG GIAN LẬN & CẢNH BÁO RỜI TAB -->
+      <div id="examAntiCheatBar" style="background:#fffbeb;border-bottom:1.5px solid #fde047;padding:8px 18px;display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;">
+        <div style="display:flex;align-items:center;gap:6px;color:#92400e;font-weight:700;">
+          <span style="font-size:1rem;">🛡️</span>
+          <span>Chế độ thi cử an toàn: Cấm chuyển tab / rời ứng dụng. Trợ lý AI đang tạm khóa.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="color:#64748b;font-weight:700;">Cảnh báo vi phạm:</span>
+          <span id="examViolationBadge" style="background:#fef2f2;border:1.2px solid #fecaca;color:#b91c1c;padding:3px 10px;border-radius:12px;font-weight:900;">
+            0 / 5 lần
+          </span>
+        </div>
+      </div>
+
+      <!-- BODY EXAM -->
+      <div class="lms-exam-body">
+        
+        <!-- QUESTIONS PANE -->
+        <div class="lms-exam-questions-pane" id="examQuestionsPane">
+          <!-- Render danh sách câu hỏi -->
+        </div>
+
+        <!-- SIDEBAR NAVIGATION & SUBMIT PANE -->
+        <div class="lms-exam-sidebar-pane">
+          <div>
+            <div style="font-weight:800;font-size:0.85rem;color:#0f172a;margin-bottom:4px;">
+              📌 Bảng Điều Hướng Câu Hỏi
+            </div>
+            <div style="font-size:0.72rem;color:#64748b;">
+              Bấm vào số câu để chuyển nhanh đến câu hỏi tương ứng.
+            </div>
+
+            <div class="lms-q-nav-grid" id="examNavGrid">
+              <!-- Render các nút số 1, 2, 3, 4, 5... -->
+            </div>
+
+            <div style="margin-top:16px;padding:12px;background:#f1f5f9;border-radius:10px;border:1px solid #e2e8f0;font-size:0.75rem;color:#334155;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <span>Tiến độ làm bài:</span>
+                <strong id="examAnsweredCount" style="color:#0284c7;">0/0 câu</strong>
+              </div>
+              <div class="lms-progress-wrapper" style="margin:0;">
+                <div class="lms-progress-fill" id="examProgressBar" style="width:0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;">
+            <button type="button" onclick="confirmSubmitExam()" style="width:100%;background:linear-gradient(135deg,#0284c7,#0369a1);color:white;border:none;padding:12px;border-radius:10px;font-weight:900;font-size:0.92rem;cursor:pointer;box-shadow:0 4px 14px rgba(2,132,199,0.35);display:flex;align-items:center;justify-content:center;gap:6px;">
+              <span>📤</span> <span>Nộp Bài Tập Ngay</span>
+            </button>
+            <div style="text-align:center;font-size:0.68rem;color:#94a3b8;margin-top:6px;">
+              Sau khi nộp, AI sẽ chấm điểm &amp; phân tích lỗi sai tức thì.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!--  -->
+  <div id="modalStudentExamResult" class="lms-exam-modal-overlay" style="display:none;">
+    <div style="background:white;width:820px;max-width:96vw;max-height:92vh;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,0.4);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #7dd3fc;">
+      
+      <!-- HEADER -->
+      <div style="background:linear-gradient(135deg,#0284c7 0%,#0369a1 100%);color:white;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.6rem;">🎉</span>
+          <div>
+            <div style="font-weight:900;font-size:1.1rem;">Kết Quả Bài Tập &amp; Cố Vấn Khắc Phục Lỗi Sai</div>
+            <div style="font-size:0.75rem;color:#e0f2fe;" id="resultModalSub">Trợ lý Cố vấn AI (Google Gemini 1.5 Flash)</div>
+          </div>
+        </div>
+        <button type="button" onclick="closeExamResultModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;">✕</button>
+      </div>
+
+      <!-- BODY RESULT & AI BREAKDOWN -->
+      <div style="flex:1;overflow-y:auto;padding:22px 26px;" id="resultModalContent">
+        <!-- Render kết quả & AI Analysis -->
+      </div>
+
+      <!-- FOOTER -->
+      <div style="padding:12px 24px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;">
+        <button type="button" onclick="askAiAboutExam()" class="btn-demo-chip" style="background:#f0fdf4;color:#15803d;border-color:#86efac;font-size:0.78rem;padding:7px 14px;font-weight:800;">
+          💬 Hỏi Thêm EDU-BOT Về Bài Này
+        </button>
+        <button type="button" onclick="closeExamResultModal()" class="btn-primary" style="padding:8px 20px;font-size:0.82rem;">
+          Đã Hiểu &amp; Hoàn Thành
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!--  -->
+  <div id="modalTeacherAiFeedback" class="lms-exam-modal-overlay" style="display:none;">
+    <div style="background:white;width:720px;max-width:96vw;max-height:90vh;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #86efac;">
+      <div style="background:linear-gradient(135deg,#15803d,#16a34a);color:white;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.6rem;">📬</span>
+          <div>
+            <div style="font-weight:900;font-size:1.05rem;" id="feedbackModalTitle">Lời Nhận Xét Của Thầy/Cô &amp; AI</div>
+            <div style="font-size:0.75rem;color:#bbf7d0;" id="feedbackModalSubtitle">Hệ thống phản hồi học tập cá nhân hóa · THCS &amp; THPT Liên Việt Kon Tum</div>
+          </div>
+        </div>
+        <button type="button" onclick="closeTeacherFeedbackModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;">✕</button>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:20px 24px;" id="feedbackModalContent">
+        <!-- Render nội dung nhận xét -->
+      </div>
+      <div style="padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;">
+        <button type="button" onclick="closeTeacherFeedbackModal()" class="btn-primary" style="padding:8px 20px;font-size:0.82rem;">Đã Hiểu &amp; Tiếp Tục Học Tập</button>
+      </div>
+    </div>
+  </div>
+
+  <!--  -->
+  <div id="modalStudentClassSwitch" class="lms-exam-modal-overlay" style="display:none;">
+    <div style="background:white;width:580px;max-width:95vw;max-height:85vh;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,0.35);display:flex;flex-direction:column;overflow:hidden;border:1.5px solid #38bdf8;">
+      <div style="background:linear-gradient(135deg,#0284c7,#0369a1);color:white;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="font-size:1.5rem;">🎒</span>
+          <div>
+            <div style="font-weight:900;font-size:1.05rem;">Chọn Lớp Học Sinh Trải Nghiệm</div>
+            <div style="font-size:0.75rem;color:#e0f2fe;">Tự động nạp hồ sơ, điểm số và MỞ ĐÚNG THỜI KHÓA BIỂU của lớp đó</div>
+          </div>
+        </div>
+        <button type="button" onclick="closeStudentClassSwitchModal()" style="background:rgba(255,255,255,0.2);border:none;color:white;width:32px;height:32px;border-radius:50%;cursor:pointer;font-weight:bold;">✕</button>
+      </div>
+
+      <div style="flex:1;overflow-y:auto;padding:18px 22px;">
+        <div style="font-size:0.8rem;font-weight:800;color:#0284c7;margin-bottom:8px;">⚡ CÁC LỚP TRỌNG ĐIỂM (1-CLICK):</div>
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;">
+          <button type="button" class="btn-demo-chip" onclick="switchActiveStudentClass('12C5')" style="padding:10px;background:#fefce8;color:#854d0e;border-color:#fde047;font-weight:800;font-size:0.8rem;justify-content:flex-start;text-align:left;">
+            🎒 <div><strong>Lớp 12C5</strong><br><span style="font-size:0.7rem;font-weight:500;color:#a16207;">Mở ngay TKB &amp; bài tập lớp 12C5</span></div>
+          </button>
+          <button type="button" class="btn-demo-chip" onclick="switchActiveStudentClass('10A2')" style="padding:10px;background:#f0fdf4;color:#15803d;border-color:#86efac;font-weight:800;font-size:0.8rem;justify-content:flex-start;text-align:left;">
+            🎒 <div><strong>Lớp 10A2</strong><br><span style="font-size:0.7rem;font-weight:500;color:#16a34a;">Mở ngay TKB &amp; bài tập lớp 10A2</span></div>
+          </button>
+          <button type="button" class="btn-demo-chip" onclick="switchActiveStudentClass('10A1')" style="padding:10px;background:#f0f9ff;color:#0284c7;border-color:#bae6fd;font-weight:800;font-size:0.8rem;justify-content:flex-start;text-align:left;">
+            🎒 <div><strong>Lớp 10A1</strong> (Gia Bảo)<br><span style="font-size:0.7rem;font-weight:500;color:#0369a1;">Tác giả đề tài NCKH</span></div>
+          </button>
+          <button type="button" class="btn-demo-chip" onclick="switchActiveStudentClass('12C1')" style="padding:10px;background:#fdf2f8;color:#9d174d;border-color:#fbcfe8;font-weight:800;font-size:0.8rem;justify-content:flex-start;text-align:left;">
+            🎒 <div><strong>Lớp 12C1</strong> (Ánh Thư)<br><span style="font-size:0.7rem;font-weight:500;color:#be185d;">Mở ngay TKB &amp; bài tập lớp 12C1</span></div>
+          </button>
+        </div>
+
+        <div style="font-size:0.8rem;font-weight:800;color:#0369a1;margin-bottom:8px;">🏫 HOẶC CHỌN 1 TRONG TẤT CẢ 41 LỚP TOÀN TRƯỜNG:</div>
+        <select id="modalSwitchClassSelect" onchange="if(this.value)switchActiveStudentClass(this.value)" style="width:100%;border:1.5px solid #38bdf8;padding:9px 14px;border-radius:10px;font-size:0.85rem;font-weight:700;color:#0f172a;outline:none;cursor:pointer;background:#f8fafc;">
+          <option value="">-- Bấm để chọn lớp học sinh --</option>
+        </select>
+      </div>
+
+      <div style="padding:12px 20px;background:#f8fafc;border-top:1px solid #e2e8f0;display:flex;justify-content:flex-end;">
+        <button type="button" onclick="closeStudentClassSwitchModal()" class="btn-primary" style="padding:7px 18px;font-size:0.8rem;">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast-notification" id="toastNotif"></div>
+
+  <script src="auth.js"></script>
+  <script src="data_tkb_school_41.js"></script>
+  <script src="data.js"></script>
+  <script src="student.js"></script>
+</body>
+</html>
