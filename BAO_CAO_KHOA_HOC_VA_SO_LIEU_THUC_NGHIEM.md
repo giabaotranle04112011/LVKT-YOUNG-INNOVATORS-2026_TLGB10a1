@@ -9,7 +9,7 @@
 # ỨNG DỤNG MÔ HÌNH HỌC MÁY TOÁN HỌC OLS – CRI KẾT HỢP TRỢ LÝ AI GEMINI FLASH TRONG CẢNH BÁO SỚM NGUY CƠ SA SÚT HỌC TẬP, PHÂN HỆ LMS GIAO BÀI VÀ ĐIỀU HÀNH THỜI KHÓA BIỂU TOÀN DIỆN 41 LỚP HỌC
 
 - **Đơn vị nghiên cứu:** Trường THCS & THPT Liên Việt Kon Tum
-- **Địa chỉ:** Nguyễn Thị Cương, Đăk BLa, Quảng Ngãi, Việt Nam
+- **Địa chỉ:** thôn 5 ã iachim, Đăk BLa, Quảng Ngãi, Việt Nam
 - **Tác giả nghiên cứu:** Trần Lê Gia Bảo — Học sinh lớp 10A1
 - **Lĩnh vực nghiên cứu:** Hệ thống phần mềm & Trí tuệ nhân tạo giáo dục (Learning Analytics & Applied Educational AI)
 - **Quy mô thực nghiệm:** Toàn diện 41 lớp học (Khối 6 đến Khối 12) với 410 học sinh chuẩn hóa, 88 giáo viên và 35 môn học chuẩn GDPT 2018.
@@ -241,7 +241,7 @@ Nhằm giải quyết triệt để tính đặc thù của Chương trình GDPT
 
 **XÁC NHẬN CỦA TÁC GIẢ ĐỀ TÀI**
 
-*(Ký và ghi rõ họ tên)*
+Trần Lê Gia Bảo 10A1
 
 **Trần Lê Gia Bảo**  
 *Học sinh Lớp 10A1 — Trường THCS & THPT Liên Việt Kon Tum*
